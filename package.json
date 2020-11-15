@@ -1,0 +1,28 @@
+{
+  "name": "eslint-angular-template-explicit-this",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/rules/eslint-angular-template-explicit-this.js",
+  "scripts": {
+    "test": "mocha ./tests/**/*.js"
+  },
+  "author": "Jeroen van Warmerdam",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@angular-eslint/template-parser": "^0.8.0-beta.0",
+    "@angular/cli": "^11.0.1",
+    "@angular/compiler": "^11.0.0",
+    "@typescript-eslint/experimental-utils": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "mocha": "^8.2.1",
+    "typescript": "^4.0.5"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "directories": {
+    "test": "./tests"
+  }
+}
