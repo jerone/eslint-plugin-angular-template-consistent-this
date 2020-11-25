@@ -1,13 +1,22 @@
 {
   "name": "eslint-angular-template-explicit-this",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/rules/eslint-angular-template-explicit-this.js",
-  "scripts": {
-    "test": "mocha ./tests/**/*.js"
+  "version": "0.0.1",
+  "description": "ESLint Angular Template consistent this for properties, variables & template references",
+  "homepage": "https://github.com/jerone/eslint-angular-template-consistent-this",
+  "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
+  "contributors": [],
+  "keywords": [
+    "eslint",
+    "eslint-rule",
+    "angular",
+    "angular-template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jerone/eslint-angular-template-consistent-this.git"
   },
-  "author": "Jeroen van Warmerdam",
-  "license": "ISC",
+  "bugs": "https://github.com/jerone/eslint-angular-template-consistent-this/issues",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "@angular-eslint/template-parser": "^0.8.0-beta.2",
@@ -15,6 +24,10 @@
     "@typescript-eslint/parser": "^4.8.2",
     "eslint": "^7.14.0",
     "mocha": "^8.2.1"
+  },
+  "main": "lib/rules/eslint-angular-template-consistent-this.js",
+  "scripts": {
+    "test": "mocha ./tests/**/*.js"
   },
   "engines": {
     "node": ">=10.0.0"
