@@ -1,6 +1,6 @@
 "use strict";
 
-const rule = require("../../../lib/rules/eslint-angular-template-consistent-this.js");
+const rule = require("../../../lib/rules/eslint-plugin-angular-template-consistent-this.js");
 const parsers = require("../../helpers/parsers.js");
 const {
   convertAnnotatedSourceToFailureCase,

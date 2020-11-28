@@ -1,7 +1,7 @@
-const rule = require("lib/rules/eslint-angular-template-consistent-this.js");
+const rule = require("lib/rules/eslint-plugin-angular-template-consistent-this.js");
 
 module.exports = {
   rules: {
-    "eslint-angular-template-consistent-this": rule,
+    "eslint-plugin-angular-template-consistent-this": rule,
   },
 };

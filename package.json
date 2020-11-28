@@ -1,8 +1,8 @@
 {
-  "name": "eslint-angular-template-explicit-this",
+  "name": "eslint-plugin-angular-template-consistent-this",
   "version": "0.0.2",
   "description": "ESLint Angular Template consistent this for properties, variables & template references",
-  "homepage": "https://github.com/jerone/eslint-angular-template-consistent-this",
+  "homepage": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this",
   "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
   "contributors": [],
   "keywords": [
@@ -13,9 +13,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jerone/eslint-angular-template-consistent-this.git"
+    "url": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this.git"
   },
-  "bugs": "https://github.com/jerone/eslint-angular-template-consistent-this/issues",
+  "bugs": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/issues",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {

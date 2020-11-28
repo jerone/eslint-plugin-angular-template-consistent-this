@@ -1,4 +1,4 @@
-# ESLint Angular Template consistent this (eslint-angular-template-consistent-this)
+# ESLint Angular Template consistent this (eslint-plugin-angular-template-consistent-this)
 
 Please describe the origin of the rule here.
 
