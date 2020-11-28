@@ -1,7 +1,31 @@
 {
+    "root": true,
     "env": {
         "es2021": true,
         "node": true,
         "mocha": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:eslint-plugin/recommended"
+    ],
+    "plugins": [
+        "eslint-plugin"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "eslint-plugin/consistent-output": ["error", "always"],
+        "eslint-plugin/meta-property-ordering": ["error"],
+        "eslint-plugin/no-deprecated-context-methods": ["error"],
+        "eslint-plugin/prefer-object-rule": ["error"],
+        "eslint-plugin/prefer-placeholders": ["error"],
+        "eslint-plugin/prefer-replace-text": ["error"],
+        "eslint-plugin/report-message-format": ["error", "^[A-Z].*(`{{prop}}`).*\\.$"], // Must start with capital, end with period and contains placeholder for "prop".
+        "eslint-plugin/require-meta-docs-url": ["error"],
+        "eslint-plugin/require-meta-schema": ["error"],
+        "eslint-plugin/require-meta-type": ["error"],
+        "eslint-plugin/test-case-shorthand-strings": ["error", "consistent"]
     }
 }

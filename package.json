@@ -23,11 +23,14 @@
     "@angular/compiler": "^11.0.2",
     "@typescript-eslint/parser": "^4.8.2",
     "eslint": "^7.14.0",
+    "eslint-plugin-eslint-plugin": "^2.3.0",
     "mocha": "^8.2.1"
   },
   "main": "lib/rules/eslint-angular-template-consistent-this.js",
   "scripts": {
-    "test": "mocha ./tests/**/*.js"
+    "test": "mocha ./tests/**/*.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "engines": {
     "node": ">=10.0.0"

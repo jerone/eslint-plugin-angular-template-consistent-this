@@ -3,7 +3,7 @@
 /**
  * FROM CODELYZER
  */
-const escapeRegexp = (value) => value.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+const escapeRegexp = (value) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 /**
  * FROM CODELYZER
  *
@@ -90,7 +90,7 @@ const parseInvalidSource = (
 };
 
 function convertAnnotatedSourceToFailureCase({
-  // @ts-ignore
+  // eslint-disable-next-line no-unused-vars
   description: _,
   annotatedSource,
   messageId,
