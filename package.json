@@ -1,6 +1,6 @@
 {
   "name": "eslint-angular-template-explicit-this",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ESLint Angular Template consistent this for properties, variables & template references",
   "homepage": "https://github.com/jerone/eslint-angular-template-consistent-this",
   "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
@@ -26,7 +26,7 @@
     "eslint-plugin-eslint-plugin": "^2.3.0",
     "mocha": "^8.2.1"
   },
-  "main": "lib/rules/eslint-angular-template-consistent-this.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha ./tests/**/*.js",
     "lint": "eslint .",
