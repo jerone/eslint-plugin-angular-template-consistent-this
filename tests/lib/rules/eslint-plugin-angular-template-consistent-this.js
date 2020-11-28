@@ -389,6 +389,13 @@ ruleTester.run(RULE_NAME, rule, {
         },
       ],
     },
+
+    /**
+     * EventEmitter $event.
+     */
+    {
+      code: `<test (bar)="this.foo($event)"></test>`,
+    },
   ],
 
   invalid: [
