@@ -19,8 +19,8 @@
   "license": "MIT",
   "devDependencies": {
     "@angular-eslint/template-parser": "^1.0.0",
-    "@angular/compiler": "^11.0.5",
-    "@typescript-eslint/parser": "^4.11.1",
+    "@angular/compiler": "^11.0.9",
+    "@typescript-eslint/parser": "^4.13.0",
     "eslint": "^7.17.0",
     "eslint-plugin-eslint-plugin": "^2.3.0",
     "mocha": "^8.2.1"
