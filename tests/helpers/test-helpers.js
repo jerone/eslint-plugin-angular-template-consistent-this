@@ -121,13 +121,23 @@ function convertAnnotatedSourceToFailureCase({
       currentValueChar,
       otherChars.filter((char) => char !== currentValueChar)
     );
+
+    const endPosition = parsedForChar.failure.endPosition,
+      startPosition = parsedForChar.failure.startPosition;
     parsedSource = parsedForChar.source;
+
+    if (!endPosition || !startPosition) {
+      throw Error(
+        `Char '${currentValueChar}' has been specified in \`messages\`, however it is not present in the source of the failure case`
+      );
+    }
+
     const error = {
       messageId,
-      line: parsedForChar.failure.startPosition.line + 1,
-      column: parsedForChar.failure.startPosition.character + 1,
-      endLine: parsedForChar.failure.endPosition.line + 1,
-      endColumn: parsedForChar.failure.endPosition.character + 1,
+      line: startPosition.line + 1,
+      column: startPosition.character + 1,
+      endLine: endPosition.line + 1,
+      endColumn: endPosition.character + 1,
     };
     if (data) {
       // TODO: Make .data writable in @typescript-eslint/experimental-utils types
