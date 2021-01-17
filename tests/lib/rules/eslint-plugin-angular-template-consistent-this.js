@@ -437,7 +437,7 @@ ruleTester.run(RULE_NAME, rule, {
                      ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{this.foo}}">{{this.bar}}</test>
+        <test bar="{{foo}}">{{this.bar}}</test>
                      ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -449,7 +449,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{foo}}">{{bar}}</test>
+        <test bar="{{this.foo}}">{{bar}}</test>
                      ~~~~~~~~`,
     }),
 
@@ -464,7 +464,7 @@ ruleTester.run(RULE_NAME, rule, {
                       ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{ this.foo }}">{{ this.bar }}</test>
+        <test bar="{{ foo }}">{{ this.bar }}</test>
                       ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -476,8 +476,62 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{ foo }}">{{ bar }}</test>
+        <test bar="{{ this.foo }}">{{ bar }}</test>
                       ~~~~~~~~`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with implicit property where it should be an explicit property, with lots of whitespace, aldo it shows the error wrong",
+      annotatedSource: `
+test {{                             pagination }}
+         ~~~~~~~~~~
+      `,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+        },
+      ],
+      annotatedOutput: `
+test {{                             pagination }}
+         ~~~~~~~~~~
+      `,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with implicit property where it should be an explicit property, with lots of whitespace, aldo it shows the error wrong",
+      annotatedSource: `
+test {{
+  pagination
+ ~~~~~~~~~~
+}}
+      `,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+        },
+      ],
+      annotatedOutput: `
+test {{
+  pagination
+ ~~~~~~~~~~
+}}
+      `,
     }),
 
     /**
@@ -545,7 +599,7 @@ ruleTester.run(RULE_NAME, rule, {
         },
       ],
       annotatedOutput: `
-        <test *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{this.bar}}</test>
+        <test *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{bar}}</test>
                      ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
@@ -584,7 +638,7 @@ ruleTester.run(RULE_NAME, rule, {
         },
       ],
       annotatedOutput: `
-        <test *ngIf="foo as bar; then thenBlock else elseBlock">{{bar}}</test>
+        <test *ngIf="foo as bar; then thenBlock else elseBlock">{{this.bar}}</test>
                      ~~~~~~~~              ^^^^^^^^^^^^^^      @@@@@@@@@@@@@@    !!!!!!!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
@@ -630,7 +684,7 @@ ruleTester.run(RULE_NAME, rule, {
       annotatedOutput: `
         <li *ngFor="let item of this.items; index as i; trackBy: this.trackByFn">
                                 ~~~~~                       ^^^^^^^^^
-          <test>{{this.i}} {{this.item}}</test>
+          <test>{{i}} {{item}}</test>
                   @     !!!!
         </li>`,
     }),
@@ -671,7 +725,7 @@ ruleTester.run(RULE_NAME, rule, {
       annotatedOutput: `
         <li *ngFor="let item of items; index as i; trackBy: trackByFn">
                                 ~~~~~~~~~~                       ^^^^^^^^^^^^^^
-          <test>{{i}} {{item}}</test>
+          <test>{{this.i}} {{this.item}}</test>
                   @@@@@@     !!!!!!!!!
         </li>`,
     }),
