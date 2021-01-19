@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-angular-template-consistent-this",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "ESLint Angular Template consistent this for properties, variables & template references",
   "homepage": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this",
   "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
