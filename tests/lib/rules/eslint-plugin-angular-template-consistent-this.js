@@ -484,7 +484,7 @@ ruleTester.run(RULE_NAME, rule, {
         "it fails with implicit property where it should be an explicit property, with lots of whitespace, aldo it shows the error wrong",
       annotatedSource: `
 test {{                             pagination }}
-         ~~~~~~~~~~
+        ~~~~~~~~~~
       `,
       options: [
         {
@@ -501,7 +501,7 @@ test {{                             pagination }}
       ],
       annotatedOutput: `
 test {{                             pagination }}
-         ~~~~~~~~~~
+        ~~~~~~~~~~
       `,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -569,8 +569,8 @@ test {{
       description:
         "it fails with implicit properties & variables & template references where it should be explicit properties & variables & template references inside NgIf directive",
       annotatedSource: `
-        <test *ngIf="foo as bar; then thenBlock else elseBlock">{{bar}}</test>
-                     ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
+        <test4 *ngIf="foo as bar; then thenBlock else elseBlock">{{bar}}</test4>
+                      ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
       options: [
@@ -599,8 +599,8 @@ test {{
         },
       ],
       annotatedOutput: `
-        <test *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{bar}}</test>
-                     ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
+        <test4 *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{bar}}</test4>
+                      ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
     }),
