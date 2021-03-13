@@ -472,7 +472,7 @@ ruleTester.run(RULE_NAME, rule, {
                      ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{foo}}">{{this.bar}}</test>
+        <test bar="{{this.foo}}">{{this.bar}}</test>
                      ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -484,7 +484,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{this.foo}}">{{bar}}</test>
+        <test bar="{{foo}}">{{bar}}</test>
                      ~~~~~~~~`,
     }),
 
@@ -499,7 +499,7 @@ ruleTester.run(RULE_NAME, rule, {
                        ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{  foo  }}">{{ this.bar }}</test>
+        <test bar="{{  this.foo  }}">{{ this.bar }}</test>
                        ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -511,7 +511,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{  this.foo  }}">{{ bar }}</test>
+        <test bar="{{  foo  }}">{{ bar }}</test>
                        ~~~~~~~~`,
     }),
 
@@ -534,7 +534,7 @@ ruleTester.run(RULE_NAME, rule, {
       ],
       annotatedOutput: `
         test {{
-          pagination
+          this.pagination
           ~~~~~~~~~~
         }}`,
     }),
@@ -556,7 +556,7 @@ test {{
       ],
       annotatedOutput: `
 test {{
-  this.pagination
+  pagination
   ~~~~~~~~~~~~~~~
 }}
       `,
@@ -573,7 +573,7 @@ test {{
                        ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test2 bar="{{ foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
+        <test2 bar="{{ this.foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
                        ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
@@ -585,7 +585,7 @@ test {{
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test3 bar="{{ this.foo.bar.baz }}">{{ foo.bar.baz }}</test3>
+        <test3 bar="{{ foo.bar.baz }}">{{ foo.bar.baz }}</test3>
                        ~~~~~~~~`,
     }),
 
@@ -627,7 +627,7 @@ test {{
         },
       ],
       annotatedOutput: `
-        <test4 *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{bar}}</test4>
+        <test4 *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{this.bar}}</test4>
                       ~~~              ^^^^^^^^^      @@@@@@@@@    !!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
@@ -666,7 +666,7 @@ test {{
         },
       ],
       annotatedOutput: `
-        <test *ngIf="foo as bar; then thenBlock else elseBlock">{{this.bar}}</test>
+        <test *ngIf="foo as bar; then thenBlock else elseBlock">{{bar}}</test>
                      ~~~~~~~~              ^^^^^^^^^^^^^^      @@@@@@@@@@@@@@    !!!!!!!!
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
@@ -712,7 +712,7 @@ test {{
       annotatedOutput: `
         <li *ngFor="let item of this.items; index as i; trackBy: this.trackByFn">
                                 ~~~~~                       ^^^^^^^^^
-          <test>{{i}} {{item}}</test>
+          <test>{{this.i}} {{this.item}}</test>
                   @     !!!!
         </li>`,
     }),
@@ -753,7 +753,7 @@ test {{
       annotatedOutput: `
         <li *ngFor="let item of items; index as i; trackBy: trackByFn">
                                 ~~~~~~~~~~                       ^^^^^^^^^^^^^^
-          <test>{{this.i}} {{this.item}}</test>
+          <test>{{i}} {{item}}</test>
                   @@@@@@     !!!!!!!!!
         </li>`,
     }),
