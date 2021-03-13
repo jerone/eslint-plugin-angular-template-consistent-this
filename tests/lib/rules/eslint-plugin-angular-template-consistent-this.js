@@ -54,7 +54,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test [bar]="this.foo">{{this.bar}}</test>`,
       options: [
         {
@@ -77,7 +77,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test bar="{{this.foo}}">{{this.bar}}</test>`,
       options: [
         {
@@ -88,20 +88,55 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Interpolation, with ignored whitespaces.
+     * Interpolation, with extra whitespaces.
      */
     {
       // Explicit.
-      code: `<test bar="{{ this.foo }}">{{ this.bar }}</test>`,
+      code: `<test bar="{{  this.foo  }}">{{   this.bar   }}</test>`,
     },
     {
       // Implicit.
-      code: `<test bar="{{ foo }}">{{ bar }}</test>`,
+      code: `<test bar="{{  foo  }}">{{   bar   }}</test>`,
       options: [{ properties: "implicit" }],
     },
     {
-      // Extra options shouldn't affect result.
-      code: `<test bar="{{ this.foo }}">{{ this.bar }}</test>`,
+      // Other options shouldn't affect result.
+      code: `<test bar="{{  this.foo  }}">{{   this.bar   }}</test>`,
+      options: [
+        {
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+
+    /**
+     * Interpolation, with line-breaks.
+     */
+    {
+      // Explicit.
+      code: `<test bar="{{
+        this.foo
+      }}">{{
+        this.bar
+      }}</test>`,
+    },
+    {
+      // Implicit.
+      code: `<test bar="{{
+        foo
+      }}">{{
+        bar
+      }}</test>`,
+      options: [{ properties: "implicit" }],
+    },
+    {
+      // Other options shouldn't affect result.
+      code: `<test bar="{{
+        this.foo
+      }}">{{
+        this.bar
+      }}</test>`,
       options: [
         {
           variables: "explicit",
@@ -123,7 +158,7 @@ ruleTester.run(RULE_NAME, rule, {
       options: [{ properties: "implicit" }],
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test [bar]="this.foo.bar.baz">{{this.foo.bar.baz}}</test>`,
       options: [
         {
@@ -150,7 +185,7 @@ ruleTester.run(RULE_NAME, rule, {
       ],
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test *ngIf="this.foo"><item>{{this.foo}}</item></test>`,
       options: [
         {
@@ -177,7 +212,7 @@ ruleTester.run(RULE_NAME, rule, {
       ],
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test [ngIf]="this.foo"><item>{{this.foo}}</item></test>`,
       options: [
         {
@@ -204,7 +239,7 @@ ruleTester.run(RULE_NAME, rule, {
       code: `<test *ngIf="this.foo as bar;"><item>{{this.foo}} {{bar}}</item></test>`,
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test *ngIf="this.foo as bar;"><item>{{this.foo}} {{bar}}</item></test>`,
       options: [
         {
@@ -231,7 +266,7 @@ ruleTester.run(RULE_NAME, rule, {
       code: `<test *ngIf="this.foo; let bar;"><item>{{this.foo}} {{bar}}</item></test>`,
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `<test *ngIf="this.foo; let bar;"><item>{{this.foo}} {{this.bar}}</item></test>`,
       options: [
         {
@@ -265,7 +300,7 @@ ruleTester.run(RULE_NAME, rule, {
         <ng-template #elseBlock>...</ng-template>`,
     },
     {
-      // Extra options shouldn't affect result.
+      // Other options shouldn't affect result.
       code: `
         <test *ngIf="foo as bar; then thenBlock else elseBlock">{{this.bar}}</test>
         <ng-template #thenBlock>...</ng-template>
@@ -454,45 +489,43 @@ ruleTester.run(RULE_NAME, rule, {
     }),
 
     /**
-     * Interpolation, with ignored whitespaces.
+     * Interpolation, with extra whitespaces.
      */
     convertAnnotatedSourceToFailureCase({
       description:
         "it fails with implicit property where it should be an explicit property, no matter of whitespaces",
       annotatedSource: `\
-        <test bar="{{ foo }}">{{ this.bar }}</test>
-                      ~~~`,
+        <test bar="{{  foo  }}">{{ this.bar }}</test>
+                       ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{ foo }}">{{ this.bar }}</test>
-                      ~~~`,
+        <test bar="{{  foo  }}">{{ this.bar }}</test>
+                       ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
       description:
         "it fails with explicit property where it should be an implicit property, no matter of whitespaces",
       annotatedSource: `\
-        <test bar="{{ this.foo }}">{{ bar }}</test>
-                      ~~~~~~~~`,
+        <test bar="{{  this.foo  }}">{{ bar }}</test>
+                       ~~~~~~~~`,
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{ this.foo }}">{{ bar }}</test>
-                      ~~~~~~~~`,
+        <test bar="{{  this.foo  }}">{{ bar }}</test>
+                       ~~~~~~~~`,
     }),
+
+    /**
+     * Interpolation, with line-breaks.
+     */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with implicit property where it should be an explicit property, with lots of whitespace, aldo it shows the error wrong",
+        "it fails with implicit property where it should be an explicit property, no matter of line-breaks",
       annotatedSource: `
-test {{                             pagination }}
-        ~~~~~~~~~~
-      `,
-      options: [
-        {
-          properties: "explicit",
-          variables: "explicit",
-          templateReferences: "explicit",
-        },
-      ],
+        test {{
+          pagination
+          ~~~~~~~~~~
+        }}`,
       messages: [
         {
           char: "~",
@@ -500,36 +533,31 @@ test {{                             pagination }}
         },
       ],
       annotatedOutput: `
-test {{                             pagination }}
-        ~~~~~~~~~~
-      `,
+        test {{
+          pagination
+          ~~~~~~~~~~
+        }}`,
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with implicit property where it should be an explicit property, with lots of whitespace, aldo it shows the error wrong",
+        "it fails with explicit property where it should be an implicit property, no matter of line-breaks",
       annotatedSource: `
 test {{
-  pagination
- ~~~~~~~~~~
+  this.pagination
+  ~~~~~~~~~~~~~~~
 }}
       `,
-      options: [
-        {
-          properties: "explicit",
-          variables: "explicit",
-          templateReferences: "explicit",
-        },
-      ],
+      options: [{ properties: "implicit" }],
       messages: [
         {
           char: "~",
-          messageId: MESSAGE_IDS.properties.explicit,
+          messageId: MESSAGE_IDS.properties.implicit,
         },
       ],
       annotatedOutput: `
 test {{
-  pagination
- ~~~~~~~~~~
+  this.pagination
+  ~~~~~~~~~~~~~~~
 }}
       `,
     }),
@@ -541,24 +569,24 @@ test {{
       description:
         "it fails with implicit property where it should be an explicit property, ignoring sub-properties",
       annotatedSource: `\
-        <test bar="{{ foo.bar.baz }}">{{ this.foo.bar.baz }}</test>
-                      ~~~`,
+        <test2 bar="{{ foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
+                       ~~~`,
       messageId: MESSAGE_IDS.properties.explicit,
       annotatedOutput: `\
-        <test bar="{{ this.foo.bar.baz }}">{{ this.foo.bar.baz }}</test>
-                      ~~~`,
+        <test2 bar="{{ foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
+                       ~~~`,
     }),
     convertAnnotatedSourceToFailureCase({
       description:
         "it fails with explicit property where it should be an implicit property, ignoring sub-properties",
       annotatedSource: `\
-        <test bar="{{ this.foo.bar.baz }}">{{ foo.bar.baz }}</test>
-                      ~~~~~~~~`,
+        <test3 bar="{{ this.foo.bar.baz }}">{{ foo.bar.baz }}</test3>
+                       ~~~~~~~~`,
       options: [{ properties: "implicit" }],
       messageId: MESSAGE_IDS.properties.implicit,
       annotatedOutput: `\
-        <test bar="{{ foo.bar.baz }}">{{ foo.bar.baz }}</test>
-                      ~~~~~~~~`,
+        <test3 bar="{{ this.foo.bar.baz }}">{{ foo.bar.baz }}</test3>
+                       ~~~~~~~~`,
     }),
 
     /**
