@@ -18,7 +18,7 @@
   "bugs": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/issues",
   "license": "MIT",
   "devDependencies": {
-    "@angular-eslint/template-parser": "^2.0.0",
+    "@angular-eslint/template-parser": "^2.0.1",
     "@angular/compiler": "^11.2.5",
     "@typescript-eslint/parser": "^4.17.0",
     "eslint": "^7.22.0",
