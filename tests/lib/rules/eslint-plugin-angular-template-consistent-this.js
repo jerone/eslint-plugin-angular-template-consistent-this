@@ -88,20 +88,20 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Interpolation, with extra whitespaces.
+     * Interpolation, with extra whitespaces and tabs.
      */
     {
       // Explicit.
-      code: `<test bar="{{  this.foo  }}">{{   this.bar   }}</test>`,
+      code: `<test bar="{{  this.foo  }}">{{		this.bar		}}</test>`,
     },
     {
       // Implicit.
-      code: `<test bar="{{  foo  }}">{{   bar   }}</test>`,
+      code: `<test bar="{{  foo  }}">{{		bar		}}</test>`,
       options: [{ properties: "implicit" }],
     },
     {
       // Other options shouldn't affect result.
-      code: `<test bar="{{  this.foo  }}">{{   this.bar   }}</test>`,
+      code: `<test bar="{{  this.foo  }}">{{		this.bar		}}</test>`,
       options: [
         {
           variables: "explicit",
@@ -489,30 +489,48 @@ ruleTester.run(RULE_NAME, rule, {
     }),
 
     /**
-     * Interpolation, with extra whitespaces.
+     * Interpolation, with extra whitespaces and tabs.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with implicit property where it should be an explicit property, no matter of whitespaces",
+        "it fails with implicit property where it should be an explicit property, no matter of whitespaces and tabs",
       annotatedSource: `\
-        <test bar="{{  foo  }}">{{ this.bar }}</test>
-                       ~~~`,
-      messageId: MESSAGE_IDS.properties.explicit,
+        <test bar="{{  foo  }}">{{		bar		}}</test>
+                       ~~~        		^^^`,
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+        },
+        {
+          char: "^",
+          messageId: MESSAGE_IDS.properties.explicit,
+        },
+      ],
       annotatedOutput: `\
-        <test bar="{{  this.foo  }}">{{ this.bar }}</test>
-                       ~~~`,
+        <test bar="{{  this.foo  }}">{{		this.bar		}}</test>
+                       ~~~        		^^^`,
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with explicit property where it should be an implicit property, no matter of whitespaces",
+        "it fails with explicit property where it should be an implicit property, no matter of whitespaces and tabs",
       annotatedSource: `\
-        <test bar="{{  this.foo  }}">{{ bar }}</test>
-                       ~~~~~~~~`,
+        <test bar="{{  this.foo  }}">{{		this.bar		}}</test>
+                       ~~~~~~~~        		^^^^^^^^`,
       options: [{ properties: "implicit" }],
-      messageId: MESSAGE_IDS.properties.implicit,
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.implicit,
+        },
+        {
+          char: "^",
+          messageId: MESSAGE_IDS.properties.implicit,
+        },
+      ],
       annotatedOutput: `\
-        <test bar="{{  foo  }}">{{ bar }}</test>
-                       ~~~~~~~~`,
+        <test bar="{{  foo  }}">{{		bar		}}</test>
+                       ~~~~~~~~        		^^^^^^^^`,
     }),
 
     /**
