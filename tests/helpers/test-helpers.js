@@ -1,4 +1,4 @@
-// https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin-template/src/rules/no-call-expression.ts
+// https://github.com/angular-eslint/angular-eslint/blob/master/packages/utils/src/test-helpers.ts
 
 /**
  * FROM CODELYZER
@@ -74,23 +74,21 @@ const parseInvalidSource = (
     character: lastCol,
     line: lastLine,
   };
-  if (specialChar)
-    replacedSource = replacedSource.replace(
-      new RegExp(escapeRegexp(specialChar), "g"),
-      " "
-    );
+  const newSource = replacedSource.replace(
+    new RegExp(escapeRegexp(specialChar), "g"),
+    ""
+  );
   return {
     failure: {
       endPosition,
       message,
       startPosition: startPosition,
     },
-    source: replacedSource,
+    source: newSource,
   };
 };
-
 function convertAnnotatedSourceToFailureCase({
-  // eslint-disable-next-line no-unused-vars
+  // @ts-expect-error It is nice to require the description for maintainability, even though we don't use it directly.
   description: _,
   annotatedSource,
   messageId,
@@ -113,25 +111,25 @@ function convertAnnotatedSourceToFailureCase({
     ];
   }
   let parsedSource = "";
-  const otherChars = messages.map(({ char }) => char);
   const errors = messages.map(({ char: currentValueChar, messageId }) => {
+    const otherChars = messages
+      .filter(({ char }) => char !== currentValueChar)
+      .map(({ char }) => char);
     const parsedForChar = parseInvalidSource(
       annotatedSource,
       "",
       currentValueChar,
-      otherChars.filter((char) => char !== currentValueChar)
+      otherChars
     );
-
-    const endPosition = parsedForChar.failure.endPosition,
-      startPosition = parsedForChar.failure.startPosition;
+    const {
+      failure: { endPosition, startPosition },
+    } = parsedForChar;
     parsedSource = parsedForChar.source;
-
     if (!endPosition || !startPosition) {
       throw Error(
         `Char '${currentValueChar}' has been specified in \`messages\`, however it is not present in the source of the failure case`
       );
     }
-
     const error = {
       messageId,
       line: startPosition.line + 1,
@@ -152,12 +150,7 @@ function convertAnnotatedSourceToFailureCase({
   };
   if (annotatedOutput) {
     // TODO: Make .output writable in @typescript-eslint/experimental-utils types
-    invalidTestCase.output = parseInvalidSource(
-      annotatedOutput,
-      "",
-      otherChars.join(""),
-      otherChars
-    ).source;
+    invalidTestCase.output = parseInvalidSource(annotatedOutput, "").source;
   }
   return invalidTestCase;
 }
