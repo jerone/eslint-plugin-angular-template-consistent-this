@@ -88,7 +88,7 @@ const parseInvalidSource = (
   };
 };
 function convertAnnotatedSourceToFailureCase({
-  // @ts-expect-error It is nice to require the description for maintainability, even though we don't use it directly.
+  // eslint-disable-next-line no-unused-vars -- It is nice to require the description for maintainability, even though we don't use it directly.
   description: _,
   annotatedSource,
   messageId,
