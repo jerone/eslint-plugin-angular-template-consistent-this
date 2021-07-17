@@ -18,15 +18,15 @@
   "bugs": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/issues",
   "license": "MIT",
   "devDependencies": {
-    "@angular-eslint/template-parser": "^4.0.0",
-    "@angular/compiler": "^11.2.10",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.24.0",
-    "eslint-plugin-eslint-plugin": "^3.0.2",
-    "mocha": "^8.3.2"
+    "@angular-eslint/template-parser": "12.3.1",
+    "@angular/compiler": "12.1.2",
+    "@typescript-eslint/parser": "4.28.3",
+    "eslint": "7.30.0",
+    "eslint-plugin-eslint-plugin": "3.4.0",
+    "mocha": "9.0.2"
   },
   "peerDependencies": {
-    "eslint": "^7.24.0"
+    "eslint": "7.30.0"
   },
   "main": "index.js",
   "scripts": {
