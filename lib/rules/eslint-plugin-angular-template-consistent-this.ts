@@ -1,7 +1,9 @@
 "use strict";
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'ensureTemp... Remove this comment to see the full error message
 const { ensureTemplateParser } = require("../get-parser-service");
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'MESSAGE_ID... Remove this comment to see the full error message
 const MESSAGE_IDS = {
   properties: {
     explicit: "explicitThisProperties",
@@ -17,6 +19,7 @@ const MESSAGE_IDS = {
   },
 };
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'RULE_NAME'... Remove this comment to see the full error message
 const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
 
 /**
@@ -33,6 +36,7 @@ const SAFE_GLOBALS = [
   "$event", // EventEmitter.
 ];
 
+// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
 module.exports = {
   MESSAGE_IDS,
   RULE_NAME,
@@ -87,7 +91,7 @@ module.exports = {
     },
   },
 
-  create(context) {
+  create(context: any) {
     // const parserServices =
     ensureTemplateParser(context);
 
@@ -99,8 +103,8 @@ module.exports = {
       ...context.options[0],
     };
 
-    var variables = [];
-    var templates = [];
+    var variables: any = [];
+    var templates: any = [];
 
     /**
      * Report explicit of implicit error to ESLint.
@@ -110,7 +114,7 @@ module.exports = {
      * @param {object} loc Start and end of faulty code.
      * @param {number} startIndex Index where to insert or replace "this.".
      */
-    const reportError = function (explicit, messageId, node) {
+    const reportError = function (explicit: any, messageId: any, node: any) {
       // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
       const loc = {
         start: sourceCode.getLocFromIndex(node.sourceSpan.start),
@@ -162,7 +166,7 @@ module.exports = {
         messageId,
         data: { prop: node.name },
         loc,
-        fix: (fixer) => {
+        fix: (fixer: any) => {
           if (explicit) {
             return fixer.insertTextBeforeRange(
               [startIndex, startIndex],
@@ -192,7 +196,7 @@ module.exports = {
        * See: https://angular.io/guide/structural-directives#template-input-variable
        * @param {*} node
        */
-      Template(node) {
+      Template(node: any) {
         variables.push(...node.variables);
         templates.push(...node.references);
         // console.log(
@@ -203,7 +207,7 @@ module.exports = {
         // );
       },
 
-      Element(node) {
+      Element(node: any) {
         // if(node.name == "clr-dg-pagination")
         // 	console.log('Element', node);
 
@@ -222,7 +226,7 @@ module.exports = {
       //   console.log("Reference", node);
       // },
 
-      PropertyRead(node) {
+      PropertyRead(node: any) {
         // console.log(
         //   "PropertyRead",
         //   node.name,
@@ -241,12 +245,14 @@ module.exports = {
         }
 
         // Some globals are safe as they are.
+        // @ts-expect-error ts-migrate(2550) FIXME: Property 'includes' does not exist on type 'string... Remove this comment to see the full error message
         if (SAFE_GLOBALS.includes(node.name)) {
           return;
         }
 
         // 1) Template *input* variable (`let foo;`).
         // Variables are defined before they are used.
+        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
         if (variables.map((x) => x.name).includes(node.name)) {
           if (options.variables === "explicit" && notExplicitReceiver) {
             return reportError(true, MESSAGE_IDS.variables.explicit, node);
@@ -259,6 +265,7 @@ module.exports = {
 
         // 2) Template *reference* variable (`#template`).
         // This will only catch templates that are defined *before* property reading.
+        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
         if (templates.map((x) => x.name).includes(node.name)) {
           if (
             options.templateReferences === "explicit" &&
@@ -286,6 +293,7 @@ module.exports = {
         // 3) Check if property is part of an safe structural directives.
         // This happens for templates that haven't been caught by check 2.
         // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
+        // @ts-expect-error ts-migrate(2550) FIXME: Property 'includes' does not exist on type 'string... Remove this comment to see the full error message
         if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
           if (
             options.templateReferences === "explicit" &&

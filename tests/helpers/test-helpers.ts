@@ -3,7 +3,7 @@
 /**
  * FROM CODELYZER
  */
-const escapeRegexp = (value) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+const escapeRegexp = (value: any) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 /**
  * FROM CODELYZER
  *
@@ -35,8 +35,8 @@ const escapeRegexp = (value) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
  * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
  */
 const parseInvalidSource = (
-  source,
-  message,
+  source: any,
+  message: any,
   specialChar = "~",
   otherChars = []
 ) => {
@@ -87,16 +87,18 @@ const parseInvalidSource = (
     source: newSource,
   };
 };
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'convertAnn... Remove this comment to see the full error message
 function convertAnnotatedSourceToFailureCase({
   // eslint-disable-next-line no-unused-vars -- It is nice to require the description for maintainability, even though we don't use it directly.
   description: _,
+
   annotatedSource,
   messageId,
   messages = [],
   data,
   options = [],
-  annotatedOutput,
-}) {
+  annotatedOutput
+}: any) {
   if (!messageId && (!messages || !messages.length)) {
     throw new Error(
       "Either `messageId` or `messages` is required when configuring a failure case"
@@ -111,9 +113,12 @@ function convertAnnotatedSourceToFailureCase({
     ];
   }
   let parsedSource = "";
+  // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'currentValueChar' implicitly has ... Remove this comment to see the full error message
   const errors = messages.map(({ char: currentValueChar, messageId }) => {
     const otherChars = messages
+      // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'char' implicitly has an 'any' typ... Remove this comment to see the full error message
       .filter(({ char }) => char !== currentValueChar)
+      // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'char' implicitly has an 'any' typ... Remove this comment to see the full error message
       .map(({ char }) => char);
     const parsedForChar = parseInvalidSource(
       annotatedSource,
@@ -139,7 +144,7 @@ function convertAnnotatedSourceToFailureCase({
     };
     if (data) {
       // TODO: Make .data writable in @typescript-eslint/experimental-utils types
-      error.data = data;
+(error as any).data = data;
     }
     return error;
   });
@@ -150,11 +155,12 @@ function convertAnnotatedSourceToFailureCase({
   };
   if (annotatedOutput) {
     // TODO: Make .output writable in @typescript-eslint/experimental-utils types
-    invalidTestCase.output = parseInvalidSource(annotatedOutput, "").source;
+(invalidTestCase as any).output = parseInvalidSource(annotatedOutput, "").source;
   }
   return invalidTestCase;
 }
 
+// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
 module.exports = {
   parseInvalidSource,
   convertAnnotatedSourceToFailureCase,

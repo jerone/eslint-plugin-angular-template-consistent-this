@@ -1,12 +1,18 @@
 "use strict";
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'rule'.
 const rule = require("../../../lib/rules/eslint-plugin-angular-template-consistent-this.js");
+// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 const parsers = require("../../helpers/parsers.js");
 const {
+  // @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'convertAnn... Remove this comment to see the full error message
   convertAnnotatedSourceToFailureCase,
+// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 } = require("../../helpers/test-helpers.js");
+// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 const { RuleTester } = require("eslint");
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'RULE_NAME'... Remove this comment to see the full error message
 const { RULE_NAME, MESSAGE_IDS } = rule;
 
 const ruleTester = new RuleTester({
