@@ -1,5 +1,8 @@
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
-import type { TSESLint } from "@typescript-eslint/experimental-utils";
+import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
+import type { AST, PropertyRead, TmplAstElement } from "@angular/compiler";
+import { ThisReceiver } from "@angular/compiler";
+import { ImplicitReceiver } from "@angular/compiler";
 
 type groups = "properties" | "variables" | "templateReferences";
 type implicitExplicit = "implicit" | "explicit";
@@ -12,6 +15,11 @@ export type MessageIds =
   | "implicitThisVariables"
   | "explicitThisTemplateReferences"
   | "implicitThisTemplateReferences";
+type PropertyReadWithParent = PropertyRead & {
+  receiver: AST;
+} & {
+  parent: TmplAstElement & { parent: TmplAstElement };
+};
 
 export const MESSAGE_IDS: messageIdKeys = {
   properties: {
@@ -116,21 +124,19 @@ export default createESLintRule<Options, MessageIds>({
      * Report explicit of implicit error to ESLint.
      * @param {boolean} explicit True for explicit error, false for implicit error.
      * @param {string} messageId Message identifier.
-     * @param {string} nodeName Node name.
-     * @param {object} loc Start and end of faulty code.
-     * @param {number} startIndex Index where to insert or replace "this.".
+     * @param {string} node Node.
      */
     const reportError = function (
-      explicit: any,
-      messageId: any,
+      explicit: boolean,
+      messageId: MessageIds,
       node: any
     ): void {
       // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
-      const loc = {
+      const loc: Readonly<TSESTree.SourceLocation> = {
         start: sourceCode.getLocFromIndex(node.sourceSpan.start),
         end: sourceCode.getLocFromIndex(node.sourceSpan.end),
       };
-      const startIndex = sourceCode.getIndexFromLoc(loc.start);
+      const startIndex: number = sourceCode.getIndexFromLoc(loc.start);
       // console.log(node);
       // console.log("1 --------");
       // console.log(node.parent);
@@ -236,23 +242,31 @@ export default createESLintRule<Options, MessageIds>({
       //   console.log("Reference", node);
       // },
 
-      PropertyRead(node: any): void {
+      PropertyRead(node: PropertyReadWithParent): void {
         // console.log(
         //   "PropertyRead",
+        //   node,
         //   node.name,
         //   node.name === "pagination" ? "!!!" : "",
-        //   variables.map((x) => x.name),
-        //   templates.map((x) => x.name),
-        //   templates.map((x) => x.name).includes("pagination")
+        //   variables.map((x: { name: any; }) => x.name),
+        //   templates.map((x: { name: any; }) => x.name),
+        //   templates.map((x: { name: any; }) => x.name).includes("pagination")
         // );
-        const notExplicitReceiver = node.receiver.type !== "ThisReceiver";
-        const notImplicitReceiver = node.receiver.type !== "ImplicitReceiver";
 
         // We're looking for `ThisReceiver` and `ImplicitReceiver`.
         // Everything else we're going to ignore.
-        if (notExplicitReceiver && notImplicitReceiver) {
+        // NOTE: currently `ThisReceiver` inherits from `ImplicitReceiver`, which might not be the case in the future.
+        if (
+          !(node.receiver instanceof ImplicitReceiver) &&
+          !(node.receiver instanceof ThisReceiver)
+        ) {
           return;
         }
+
+        const isExplicitReceiver = node.receiver instanceof ThisReceiver;
+        const isImplicitReceiver =
+          node.receiver instanceof ImplicitReceiver &&
+          !(node.receiver instanceof ThisReceiver); // `ThisReceiver` inherits from `ImplicitReceiver`.
 
         // Some globals are safe as they are.
         if (SAFE_GLOBALS.includes(node.name)) {
@@ -262,9 +276,9 @@ export default createESLintRule<Options, MessageIds>({
         // 1) Template *input* variable (`let foo;`).
         // Variables are defined before they are used.
         if (variables.map((x: { name: any }) => x.name).includes(node.name)) {
-          if (options.variables === "explicit" && notExplicitReceiver) {
+          if (options.variables === "explicit" && isImplicitReceiver) {
             return reportError(true, MESSAGE_IDS.variables.explicit, node);
-          } else if (options.variables === "implicit" && notImplicitReceiver) {
+          } else if (options.variables === "implicit" && isExplicitReceiver) {
             return reportError(false, MESSAGE_IDS.variables.implicit, node);
           }
 
@@ -274,10 +288,7 @@ export default createESLintRule<Options, MessageIds>({
         // 2) Template *reference* variable (`#template`).
         // This will only catch templates that are defined *before* property reading.
         if (templates.map((x: any) => x.name).includes(node.name)) {
-          if (
-            options.templateReferences === "explicit" &&
-            notExplicitReceiver
-          ) {
+          if (options.templateReferences === "explicit" && isImplicitReceiver) {
             return reportError(
               true,
               MESSAGE_IDS.templateReferences.explicit,
@@ -285,7 +296,7 @@ export default createESLintRule<Options, MessageIds>({
             );
           } else if (
             options.templateReferences === "implicit" &&
-            notImplicitReceiver
+            isExplicitReceiver
           ) {
             return reportError(
               false,
@@ -301,10 +312,7 @@ export default createESLintRule<Options, MessageIds>({
         // This happens for templates that haven't been caught by check 2.
         // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
         if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
-          if (
-            options.templateReferences === "explicit" &&
-            notExplicitReceiver
-          ) {
+          if (options.templateReferences === "explicit" && isImplicitReceiver) {
             return reportError(
               true,
               MESSAGE_IDS.templateReferences.explicit,
@@ -312,7 +320,7 @@ export default createESLintRule<Options, MessageIds>({
             );
           } else if (
             options.templateReferences === "implicit" &&
-            notImplicitReceiver
+            isExplicitReceiver
           ) {
             return reportError(
               false,
@@ -325,9 +333,9 @@ export default createESLintRule<Options, MessageIds>({
         }
 
         // 4) Interpolation of databinding property.
-        if (options.properties === "explicit" && notExplicitReceiver) {
+        if (options.properties === "explicit" && isImplicitReceiver) {
           return reportError(true, MESSAGE_IDS.properties.explicit, node);
-        } else if (options.properties === "implicit" && notImplicitReceiver) {
+        } else if (options.properties === "implicit" && isExplicitReceiver) {
           return reportError(false, MESSAGE_IDS.properties.implicit, node);
         }
       },
