@@ -1,11 +1,11 @@
 "use strict";
 
-import { convertAnnotatedSourceToFailureCase } from "../../helpers/test-helpers";
-import { RuleTester } from "../../helpers/rule-tester";
+import { convertAnnotatedSourceToFailureCase } from "../helpers/test-helpers";
+import { RuleTester } from "../helpers/rule-tester";
 import rule, {
   RULE_NAME,
   MESSAGE_IDS,
-} from "../../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
+} from "../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
 
 const ruleTester = new RuleTester({
   parser: "@angular-eslint/template-parser",
