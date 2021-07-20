@@ -1,21 +1,18 @@
-import type { ParseSourceSpan, TmplAstElement } from '@angular/compiler';
+import type { ParseSourceSpan, TmplAstElement } from "@angular/compiler";
 import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from "@typescript-eslint/experimental-utils";
 
 export const createESLintRule = ESLintUtils.RuleCreator(
-  // eslint-disable-next-line no-unused-vars
-  (_ruleName) => `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md`
+  (_ruleName) =>
+    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md`
 );
 
 interface ParserServices {
   convertNodeSourceSpanToLoc: (
-    // eslint-disable-next-line no-unused-vars
     sourceSpan: ParseSourceSpan
   ) => TSESTree.SourceLocation;
   convertElementSourceSpanToLoc: (
-    // eslint-disable-next-line no-unused-vars
     context: Readonly<TSESLint.RuleContext<string, readonly unknown[]>>,
-    // eslint-disable-next-line no-unused-vars
     node: TmplAstElement
   ) => TSESTree.SourceLocation;
 }

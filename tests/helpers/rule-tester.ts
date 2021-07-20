@@ -1,21 +1,21 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as path from 'path';
+import { TSESLint } from "@typescript-eslint/experimental-utils";
+import * as path from "path";
 
 const VALID_PARSERS = [
-  '@angular-eslint/template-parser',
-  '@typescript-eslint/parser',
+  "@angular-eslint/template-parser",
+  "@typescript-eslint/parser",
 ] as const;
 
-type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
+type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, "parser"> & {
   parser: typeof VALID_PARSERS[number];
 };
 
-function getFixturesRootDir() {
-  return path.join(process.cwd(), 'tests/fixtures/');
+function getFixturesRootDir(): string {
+  return path.join(process.cwd(), "tests/fixtures/");
 }
 
 function isValidParser(
-  parser?: string,
+  parser?: string
 ): parser is typeof VALID_PARSERS[number] {
   return VALID_PARSERS.includes(parser as typeof VALID_PARSERS[number]);
 }
@@ -33,7 +33,7 @@ export class RuleTester extends TSESLint.RuleTester {
     });
 
     if (options.parserOptions?.project) {
-      this.filename = path.join(getFixturesRootDir(), 'file.ts');
+      this.filename = path.join(getFixturesRootDir(), "file.ts");
     }
 
     // // make sure that the parser doesn't hold onto file handles between tests
@@ -56,18 +56,18 @@ export class RuleTester extends TSESLint.RuleTester {
   run<TMessageIds extends string, TOptions extends readonly unknown[]>(
     name: string,
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
-    { valid, invalid }: TSESLint.RunTests<TMessageIds, TOptions>,
+    { valid, invalid }: TSESLint.RunTests<TMessageIds, TOptions>
   ): void {
     const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${VALID_PARSERS.join(
-      ', ',
+      ", "
     )}`;
     const parsedTests = {
       valid: valid.map((test) => {
-        if (typeof test !== 'string' && isValidParser(test.parser)) {
+        if (typeof test !== "string" && isValidParser(test.parser)) {
           throw Error(errorMessage);
         }
         return {
-          ...(typeof test === 'string' ? { code: test } : test),
+          ...(typeof test === "string" ? { code: test } : test),
           filename: this.filename,
         };
       }),

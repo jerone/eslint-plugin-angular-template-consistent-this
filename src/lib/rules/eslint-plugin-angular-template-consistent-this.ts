@@ -54,7 +54,6 @@ const SAFE_GLOBALS = [
 
 export default createESLintRule<Options, MessageIds>({
   name: RULE_NAME,
-  //MESSAGE_IDS,
   defaultOptions: [
     {
       properties: "explicit",
