@@ -1,5 +1,3 @@
-"use strict";
-
 import { convertAnnotatedSourceToFailureCase } from "../helpers/test-helpers";
 import { RuleTester } from "../helpers/rule-tester";
 import rule, {

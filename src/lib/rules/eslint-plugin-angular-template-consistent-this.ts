@@ -1,5 +1,3 @@
-"use strict";
-
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
 import type { TSESLint } from "@typescript-eslint/experimental-utils";
 
