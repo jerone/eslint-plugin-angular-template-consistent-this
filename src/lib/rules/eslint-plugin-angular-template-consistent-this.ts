@@ -1,6 +1,14 @@
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
 import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
-import type { AST, PropertyRead, TmplAstElement } from "@angular/compiler";
+import type {
+  AST,
+  ElementAst,
+  EmbeddedTemplateAst,
+  PropertyRead,
+  ReferenceAst,
+  TmplAstElement,
+  VariableAst,
+} from "@angular/compiler";
 import { ThisReceiver } from "@angular/compiler";
 import { ImplicitReceiver } from "@angular/compiler";
 
@@ -116,8 +124,8 @@ export default createESLintRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode();
     const options = optionsWithDefault[0];
 
-    const variables: any = [];
-    const templates: any = [];
+    const variables: Array<VariableAst> = [];
+    const templates: Array<ReferenceAst> = [];
 
     /**
      * Report explicit of implicit error to ESLint.
@@ -128,7 +136,7 @@ export default createESLintRule<Options, MessageIds>({
     const reportError = function (
       explicit: boolean,
       messageId: MessageIds,
-      node: any
+      node: PropertyReadWithParent | VariableAst | ReferenceAst | any
     ): void {
       // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
       const loc: Readonly<TSESTree.SourceLocation> = {
@@ -211,7 +219,7 @@ export default createESLintRule<Options, MessageIds>({
        * See: https://angular.io/guide/structural-directives#template-input-variable
        * @param {*} node
        */
-      Template(node: any): void {
+      Template(node: EmbeddedTemplateAst): void {
         variables.push(...node.variables);
         templates.push(...node.references);
         // console.log(
@@ -222,9 +230,9 @@ export default createESLintRule<Options, MessageIds>({
         // );
       },
 
-      Element(node: any): void {
+      Element(node: ElementAst): void {
         // if(node.name == "clr-dg-pagination")
-        // 	console.log('Element', node);
+        // console.log("Element", node);
 
         if (node.references && node.references.length > 0) {
           templates.push(...node.references);
@@ -274,7 +282,7 @@ export default createESLintRule<Options, MessageIds>({
 
         // 1) Template *input* variable (`let foo;`).
         // Variables are defined before they are used.
-        if (variables.map((x: { name: any }) => x.name).includes(node.name)) {
+        if (variables.map((x: VariableAst) => x.name).includes(node.name)) {
           if (options.variables === "explicit" && isImplicitReceiver) {
             return reportError(true, MESSAGE_IDS.variables.explicit, node);
           } else if (options.variables === "implicit" && isExplicitReceiver) {
@@ -286,7 +294,7 @@ export default createESLintRule<Options, MessageIds>({
 
         // 2) Template *reference* variable (`#template`).
         // This will only catch templates that are defined *before* property reading.
-        if (templates.map((x: any) => x.name).includes(node.name)) {
+        if (templates.map((x: ReferenceAst) => x.name).includes(node.name)) {
           if (options.templateReferences === "explicit" && isImplicitReceiver) {
             return reportError(
               true,
