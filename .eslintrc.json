@@ -1,7 +1,7 @@
 {
     "root": true,
+    "parser": "@typescript-eslint/parser",
     "env": {
-        "es2021": true,
         "node": true,
         "mocha": true
     },
@@ -12,9 +12,10 @@
     "plugins": [
         "eslint-plugin"
     ],
-    "parserOptions": {
-        "ecmaVersion": 12
-    },
+    // "parserOptions": {
+    //     "ecmaVersion": 12,
+    //     "sourceType": "module"
+    // },
     "rules": {
         "eslint-plugin/consistent-output": ["error", "always"],
         "eslint-plugin/meta-property-ordering": ["error"],

@@ -1,10 +1,23 @@
 "use strict";
 
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'ensureTemp... Remove this comment to see the full error message
-const { ensureTemplateParser } = require("../get-parser-service");
+import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
+import type { TSESLint } from "@typescript-eslint/experimental-utils";
 
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'MESSAGE_ID... Remove this comment to see the full error message
-const MESSAGE_IDS = {
+type groups = "properties" | "variables" | "templateReferences";
+type implicitExplicit = "implicit" | "explicit";
+// eslint-disable-next-line no-unused-vars
+type messageIdKeys = { [_ in groups]: { [_ in implicitExplicit]: MessageIds } };
+// eslint-disable-next-line no-unused-vars
+type Options = Array<{ [_ in groups]: implicitExplicit }>;
+export type MessageIds =
+  | "explicitThisProperties"
+  | "implicitThisProperties"
+  | "explicitThisVariables"
+  | "implicitThisVariables"
+  | "explicitThisTemplateReferences"
+  | "implicitThisTemplateReferences";
+
+export const MESSAGE_IDS: messageIdKeys = {
   properties: {
     explicit: "explicitThisProperties",
     implicit: "implicitThisProperties",
@@ -19,8 +32,7 @@ const MESSAGE_IDS = {
   },
 };
 
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'RULE_NAME'... Remove this comment to see the full error message
-const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
+export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
 
 /**
  * Structural directives that are known to contain template *reference* variables.
@@ -36,10 +48,16 @@ const SAFE_GLOBALS = [
   "$event", // EventEmitter.
 ];
 
-// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = {
-  MESSAGE_IDS,
-  RULE_NAME,
+export default createESLintRule<Options, MessageIds>({
+  name: RULE_NAME,
+  //MESSAGE_IDS,
+  defaultOptions: [
+    {
+      properties: "explicit",
+      variables: "implicit",
+      templateReferences: "implicit",
+    },
+  ],
 
   meta: {
     type: "suggestion",
@@ -48,8 +66,7 @@ module.exports = {
         "ESLint Angular Template consistent this for properties, variables & template references.",
       category: "Stylistic Issues",
       recommended: false,
-      url:
-        "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
+      //url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
     },
     fixable: "code",
     schema: [
@@ -76,32 +93,26 @@ module.exports = {
       },
     ],
     messages: {
-      [MESSAGE_IDS.properties.explicit]:
-        "Use explicit this for property `{{prop}}`.",
-      [MESSAGE_IDS.properties.implicit]:
+      explicitThisProperties: "Use explicit this for property `{{prop}}`.",
+      implicitThisProperties:
         "Don't use explicit this for property `{{prop}}`.",
-      [MESSAGE_IDS.variables.explicit]:
-        "Use explicit this for variable `{{prop}}`.",
-      [MESSAGE_IDS.variables.implicit]:
-        "Don't use explicit this for variable `{{prop}}`.",
-      [MESSAGE_IDS.templateReferences.explicit]:
+      explicitThisVariables: "Use explicit this for variable `{{prop}}`.",
+      implicitThisVariables: "Don't use explicit this for variable `{{prop}}`.",
+      explicitThisTemplateReferences:
         "Use explicit this for template references `{{prop}}`.",
-      [MESSAGE_IDS.templateReferences.implicit]:
+      implicitThisTemplateReferences:
         "Don't use explicit this for template references `{{prop}}`.",
     },
   },
-
-  create(context: any) {
+  create(
+    context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+    optionsWithDefault: Readonly<Options>
+  ) {
     // const parserServices =
     ensureTemplateParser(context);
 
     const sourceCode = context.getSourceCode();
-    let options = {
-      properties: "explicit",
-      variables: "implicit",
-      templateReferences: "implicit",
-      ...context.options[0],
-    };
+    let options = optionsWithDefault[0];
 
     var variables: any = [];
     var templates: any = [];
@@ -166,7 +177,7 @@ module.exports = {
         messageId,
         data: { prop: node.name },
         loc,
-        fix: (fixer: any) => {
+        fix: (fixer: TSESLint.RuleFixer) => {
           if (explicit) {
             return fixer.insertTextBeforeRange(
               [startIndex, startIndex],
@@ -245,15 +256,13 @@ module.exports = {
         }
 
         // Some globals are safe as they are.
-        // @ts-expect-error ts-migrate(2550) FIXME: Property 'includes' does not exist on type 'string... Remove this comment to see the full error message
         if (SAFE_GLOBALS.includes(node.name)) {
           return;
         }
 
         // 1) Template *input* variable (`let foo;`).
         // Variables are defined before they are used.
-        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
-        if (variables.map((x) => x.name).includes(node.name)) {
+        if (variables.map((x: { name: any }) => x.name).includes(node.name)) {
           if (options.variables === "explicit" && notExplicitReceiver) {
             return reportError(true, MESSAGE_IDS.variables.explicit, node);
           } else if (options.variables === "implicit" && notImplicitReceiver) {
@@ -265,8 +274,7 @@ module.exports = {
 
         // 2) Template *reference* variable (`#template`).
         // This will only catch templates that are defined *before* property reading.
-        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
-        if (templates.map((x) => x.name).includes(node.name)) {
+        if (templates.map((x: any) => x.name).includes(node.name)) {
           if (
             options.templateReferences === "explicit" &&
             notExplicitReceiver
@@ -293,7 +301,6 @@ module.exports = {
         // 3) Check if property is part of an safe structural directives.
         // This happens for templates that haven't been caught by check 2.
         // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
-        // @ts-expect-error ts-migrate(2550) FIXME: Property 'includes' does not exist on type 'string... Remove this comment to see the full error message
         if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
           if (
             options.templateReferences === "explicit" &&
@@ -327,4 +334,4 @@ module.exports = {
       },
     };
   },
-};
+});

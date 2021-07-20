@@ -1,9 +1,31 @@
 // https://github.com/angular-eslint/angular-eslint/blob/master/packages/utils/src/test-helpers.ts
 
+import type { TSESLint } from "@typescript-eslint/experimental-utils";
+
 /**
  * FROM CODELYZER
  */
-const escapeRegexp = (value: any) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+interface SourcePosition {
+  readonly character: number;
+  readonly line: number;
+}
+
+/**
+ * FROM CODELYZER
+ */
+interface ExpectedFailure {
+  readonly endPosition?: SourcePosition;
+  readonly message: string;
+  readonly startPosition?: SourcePosition;
+}
+
+/**
+ * FROM CODELYZER
+ */
+function escapeRegexp(value: string) {
+  return value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+}
+
 /**
  * FROM CODELYZER
  *
@@ -28,140 +50,155 @@ const escapeRegexp = (value: any) => value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$
  * contains the `.startPosition` and `.endPosition` of the tildes.
  *
  * @param source The annotated source code with tildes.
- * @param message Passed to the result's `.failure.message` property.
  * @param specialChar The character to look for; in the above example that's ~.
  * @param otherChars All other characters which should be ignored. Used when asserting multiple
  *                   failures where there are multiple invalid characters.
  * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
  */
-const parseInvalidSource = (
-  source: any,
-  message: any,
+export function parseInvalidSource(
+  source: string,
   specialChar = "~",
-  otherChars = []
-) => {
-  let replacedSource;
+  otherChars: readonly string[] = []
+): { readonly failure: ExpectedFailure; readonly source: string } {
+  let replacedSource: string;
+
   if (otherChars.length === 0) {
     replacedSource = source;
   } else {
     const patternAsStr = `[${otherChars.map(escapeRegexp).join("")}]`;
-    const pattern = new RegExp(patternAsStr, "g");
+    const pattern = RegExp(patternAsStr, "g");
     replacedSource = source.replace(pattern, " ");
   }
+
   let col = 0;
   let line = 0;
   let lastCol = 0;
   let lastLine = 0;
-  let startPosition;
+  let startPosition: SourcePosition | undefined;
+
   for (const currentChar of replacedSource) {
     if (currentChar === "\n") {
       col = 0;
       line++;
+
       continue;
     }
+
     col++;
+
     if (currentChar !== specialChar) continue;
+
     if (!startPosition) {
       startPosition = {
         character: col - 1,
         line: line - 1,
       };
     }
+
     lastCol = col;
     lastLine = line - 1;
   }
-  const endPosition = {
+
+  const endPosition: SourcePosition = {
     character: lastCol,
     line: lastLine,
   };
   const newSource = replacedSource.replace(
-    new RegExp(escapeRegexp(specialChar), "g"),
+    RegExp(escapeRegexp(specialChar), "g"),
     ""
   );
+
   return {
     failure: {
       endPosition,
-      message,
-      startPosition: startPosition,
+      message: "",
+      startPosition: startPosition!,
     },
     source: newSource,
   };
-};
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'convertAnn... Remove this comment to see the full error message
-function convertAnnotatedSourceToFailureCase({
-  // eslint-disable-next-line no-unused-vars -- It is nice to require the description for maintainability, even though we don't use it directly.
-  description: _,
-
-  annotatedSource,
-  messageId,
-  messages = [],
-  data,
-  options = [],
-  annotatedOutput
-}: any) {
-  if (!messageId && (!messages || !messages.length)) {
-    throw new Error(
-      "Either `messageId` or `messages` is required when configuring a failure case"
-    );
-  }
-  if (messageId) {
-    messages = [
-      {
-        char: "~",
-        messageId,
-      },
-    ];
-  }
-  let parsedSource = "";
-  // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'currentValueChar' implicitly has ... Remove this comment to see the full error message
-  const errors = messages.map(({ char: currentValueChar, messageId }) => {
-    const otherChars = messages
-      // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'char' implicitly has an 'any' typ... Remove this comment to see the full error message
-      .filter(({ char }) => char !== currentValueChar)
-      // @ts-expect-error ts-migrate(7031) FIXME: Binding element 'char' implicitly has an 'any' typ... Remove this comment to see the full error message
-      .map(({ char }) => char);
-    const parsedForChar = parseInvalidSource(
-      annotatedSource,
-      "",
-      currentValueChar,
-      otherChars
-    );
-    const {
-      failure: { endPosition, startPosition },
-    } = parsedForChar;
-    parsedSource = parsedForChar.source;
-    if (!endPosition || !startPosition) {
-      throw Error(
-        `Char '${currentValueChar}' has been specified in \`messages\`, however it is not present in the source of the failure case`
-      );
-    }
-    const error = {
-      messageId,
-      line: startPosition.line + 1,
-      column: startPosition.character + 1,
-      endLine: endPosition.line + 1,
-      endColumn: endPosition.character + 1,
-    };
-    if (data) {
-      // TODO: Make .data writable in @typescript-eslint/experimental-utils types
-(error as any).data = data;
-    }
-    return error;
-  });
-  const invalidTestCase = {
-    code: parsedSource,
-    options,
-    errors,
-  };
-  if (annotatedOutput) {
-    // TODO: Make .output writable in @typescript-eslint/experimental-utils types
-(invalidTestCase as any).output = parseInvalidSource(annotatedOutput, "").source;
-  }
-  return invalidTestCase;
 }
 
-// @ts-expect-error ts-migrate(2580) FIXME: Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = {
-  parseInvalidSource,
-  convertAnnotatedSourceToFailureCase,
+type BaseErrorOptions = {
+  readonly description: string;
+  readonly annotatedSource: string;
+  readonly options?: readonly unknown[];
+  readonly annotatedOutput?: string;
 };
+
+type Message<TMessageIds extends string> = {
+  readonly messageId: TMessageIds;
+  readonly data?: Record<string, unknown>;
+  readonly suggestions?: TSESLint.SuggestionOutput<TMessageIds>[];
+};
+
+type SingleErrorOptions<TMessageIds extends string> = BaseErrorOptions &
+  Message<TMessageIds>;
+
+type MultipleErrorOptions<TMessageIds extends string> = BaseErrorOptions & {
+  readonly messages: readonly (Message<TMessageIds> & {
+    readonly char: string;
+  })[];
+};
+
+export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
+  // eslint-disable-next-line no-unused-vars
+  errorOptions: SingleErrorOptions<TMessageIds>
+): TSESLint.InvalidTestCase<TMessageIds, readonly unknown[]>;
+// eslint-disable-next-line no-redeclare
+export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
+  // eslint-disable-next-line no-unused-vars
+  errorOptions: MultipleErrorOptions<TMessageIds>
+): TSESLint.InvalidTestCase<TMessageIds, readonly unknown[]>;
+// eslint-disable-next-line no-redeclare
+export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
+  errorOptions:
+    | SingleErrorOptions<TMessageIds>
+    | MultipleErrorOptions<TMessageIds>
+): TSESLint.InvalidTestCase<TMessageIds, readonly unknown[]> {
+  const messages: MultipleErrorOptions<TMessageIds>["messages"] =
+    "messageId" in errorOptions
+      ? [{ ...errorOptions, char: "~" }]
+      : errorOptions.messages;
+  let parsedSource = "";
+  const errors: TSESLint.TestCaseError<TMessageIds>[] = messages.map(
+    ({ char: currentValueChar, data, messageId, suggestions }) => {
+      const otherChars = messages
+        .map(({ char }) => char)
+        .filter((char) => char !== currentValueChar);
+      const parsedForChar = parseInvalidSource(
+        errorOptions.annotatedSource,
+        currentValueChar,
+        otherChars
+      );
+      const {
+        failure: { endPosition, startPosition },
+      } = parsedForChar;
+      parsedSource = parsedForChar.source;
+
+      if (!endPosition || !startPosition) {
+        throw Error(
+          `Char '${currentValueChar}' has been specified in \`messages\`, however it is not present in the source of the failure case`
+        );
+      }
+
+      return {
+        data,
+        messageId,
+        line: startPosition.line + 1,
+        column: startPosition.character + 1,
+        endLine: endPosition.line + 1,
+        endColumn: endPosition.character + 1,
+        suggestions,
+      };
+    }
+  );
+
+  return {
+    code: parsedSource,
+    options: errorOptions.options ?? [],
+    errors,
+    output: errorOptions.annotatedOutput
+      ? parseInvalidSource(errorOptions.annotatedOutput).source
+      : null,
+  };
+}
