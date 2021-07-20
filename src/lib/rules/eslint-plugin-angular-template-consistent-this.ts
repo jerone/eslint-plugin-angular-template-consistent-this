@@ -3,9 +3,7 @@ import type { TSESLint } from "@typescript-eslint/experimental-utils";
 
 type groups = "properties" | "variables" | "templateReferences";
 type implicitExplicit = "implicit" | "explicit";
-// eslint-disable-next-line no-unused-vars
 type messageIdKeys = { [_ in groups]: { [_ in implicitExplicit]: MessageIds } };
-// eslint-disable-next-line no-unused-vars
 type Options = Array<{ [_ in groups]: implicitExplicit }>;
 export type MessageIds =
   | "explicitThisProperties"
@@ -36,7 +34,7 @@ export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
  * Structural directives that are known to contain template *reference* variables.
  * See https://angular.io/guide/built-in-directives#built-in-structural-directives
  */
-const SAFE_STRUCTURAL_DIRECTIVES = [
+const SAFE_STRUCTURAL_DIRECTIVES: Array<string> = [
   "ngIfThen", // Then case in NgIf directive.
   "ngIfElse", // Else case in NgIf directive.
   "ngTemplateOutlet", // Template.
@@ -105,15 +103,14 @@ export default createESLintRule<Options, MessageIds>({
   create(
     context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
     optionsWithDefault: Readonly<Options>
-  ) {
-    // const parserServices =
+  ): TSESLint.RuleListener {
     ensureTemplateParser(context);
 
     const sourceCode = context.getSourceCode();
-    let options = optionsWithDefault[0];
+    const options = optionsWithDefault[0];
 
-    var variables: any = [];
-    var templates: any = [];
+    const variables: any = [];
+    const templates: any = [];
 
     /**
      * Report explicit of implicit error to ESLint.
@@ -123,7 +120,11 @@ export default createESLintRule<Options, MessageIds>({
      * @param {object} loc Start and end of faulty code.
      * @param {number} startIndex Index where to insert or replace "this.".
      */
-    const reportError = function (explicit: any, messageId: any, node: any) {
+    const reportError = function (
+      explicit: any,
+      messageId: any,
+      node: any
+    ): void {
       // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
       const loc = {
         start: sourceCode.getLocFromIndex(node.sourceSpan.start),
@@ -205,7 +206,7 @@ export default createESLintRule<Options, MessageIds>({
        * See: https://angular.io/guide/structural-directives#template-input-variable
        * @param {*} node
        */
-      Template(node: any) {
+      Template(node: any): void {
         variables.push(...node.variables);
         templates.push(...node.references);
         // console.log(
@@ -216,7 +217,7 @@ export default createESLintRule<Options, MessageIds>({
         // );
       },
 
-      Element(node: any) {
+      Element(node: any): void {
         // if(node.name == "clr-dg-pagination")
         // 	console.log('Element', node);
 
@@ -235,7 +236,7 @@ export default createESLintRule<Options, MessageIds>({
       //   console.log("Reference", node);
       // },
 
-      PropertyRead(node: any) {
+      PropertyRead(node: any): void {
         // console.log(
         //   "PropertyRead",
         //   node.name,

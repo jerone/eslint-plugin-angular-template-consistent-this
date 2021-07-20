@@ -22,7 +22,7 @@ interface ExpectedFailure {
 /**
  * FROM CODELYZER
  */
-function escapeRegexp(value: string) {
+function escapeRegexp(value: string): string {
   return value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 }
 
@@ -112,6 +112,7 @@ export function parseInvalidSource(
     failure: {
       endPosition,
       message: "",
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       startPosition: startPosition!,
     },
     source: newSource,
@@ -141,15 +142,11 @@ type MultipleErrorOptions<TMessageIds extends string> = BaseErrorOptions & {
 };
 
 export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
-  // eslint-disable-next-line no-unused-vars
   errorOptions: SingleErrorOptions<TMessageIds>
 ): TSESLint.InvalidTestCase<TMessageIds, readonly unknown[]>;
-// eslint-disable-next-line no-redeclare
 export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
-  // eslint-disable-next-line no-unused-vars
   errorOptions: MultipleErrorOptions<TMessageIds>
 ): TSESLint.InvalidTestCase<TMessageIds, readonly unknown[]>;
-// eslint-disable-next-line no-redeclare
 export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
   errorOptions:
     | SingleErrorOptions<TMessageIds>
