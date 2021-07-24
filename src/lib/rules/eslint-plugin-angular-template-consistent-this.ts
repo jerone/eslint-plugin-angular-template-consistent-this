@@ -263,6 +263,7 @@ export default createESLintRule<Options, MessageIds>({
         // We're looking for `ThisReceiver` and `ImplicitReceiver`.
         // Everything else we're going to ignore.
         // NOTE: currently `ThisReceiver` inherits from `ImplicitReceiver`, which might not be the case in the future.
+        // https://github.com/angular/angular/blob/05d996d8039b82fd0361a921224fdbf07c4b2c91/packages/compiler/src/expression_parser/ast.ts#L88-L100
         if (
           !(node.receiver instanceof ImplicitReceiver) &&
           !(node.receiver instanceof ThisReceiver)

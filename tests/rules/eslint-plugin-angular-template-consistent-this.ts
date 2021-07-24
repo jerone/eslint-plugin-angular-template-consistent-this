@@ -13,10 +13,11 @@ ruleTester.run(RULE_NAME, rule, {
   valid: [
     /**
      * Only properties should be prefixed, not values.
+     * Just an sanity check.
      */
     {
       // Explicit.
-      code: `<test [bar]="123" [foo]="true">{{false}}</test>`,
+      code: `<test [bar]="123" [foo]="true">{{'test'}}</test>`,
       options: [
         {
           properties: "explicit",
@@ -27,7 +28,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
     {
       // Implicit.
-      code: `<test [bar]="123" [foo]="true">{{false}}</test>`,
+      code: `<test [bar]="123" [foo]="true">{{'test'}}</test>`,
       options: [
         {
           properties: "implicit",
@@ -39,6 +40,7 @@ ruleTester.run(RULE_NAME, rule, {
 
     /**
      * Databinding.
+     * TODO: Databinding with extra spaces, tabs and newlines.
      */
     {
       // Explicit.
