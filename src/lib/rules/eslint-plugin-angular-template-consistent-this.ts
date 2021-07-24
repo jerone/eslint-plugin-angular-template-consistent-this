@@ -117,12 +117,11 @@ export default createESLintRule<Options, MessageIds>({
   },
   create(
     context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
-    optionsWithDefault: Readonly<Options>
+    [options]: Readonly<Options>
   ): TSESLint.RuleListener {
     ensureTemplateParser(context);
 
     const sourceCode = context.getSourceCode();
-    const options = optionsWithDefault[0];
 
     const variables: Array<VariableAst> = [];
     const templates: Array<ReferenceAst> = [];
