@@ -144,6 +144,29 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
+     * Interpolation, with pipes.
+     */
+    {
+      // Explicit.
+      code: `<test bar="{{this.foo | json}}">{{this.bar | json}}</test>`,
+    },
+    {
+      // Implicit.
+      code: `<test bar="{{foo | json}}">{{bar | json}}</test>`,
+      options: [{ properties: "implicit" }],
+    },
+    {
+      // Other options shouldn't affect result.
+      code: `<test bar="{{this.foo | json}}">{{this.bar | json}}</test>`,
+      options: [
+        {
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+
+    /**
      * Databinding & interpolation with sub-properties.
      */
     {
@@ -576,6 +599,35 @@ test {{
   ~~~~~~~~~~~~~~~
 }}
       `,
+    }),
+
+    /**
+     * Interpolation, with pipes.
+     */
+     convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with interpolation implicit property where it should be an explicit property",
+      annotatedSource: `\
+        <test bar="{{foo | json}}">{{this.bar | json}}</test>
+                     ~~~`,
+      messageId: MESSAGE_IDS.properties.explicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test bar="{{this.foo | json}}">{{this.bar | json}}</test>
+                     ~~~`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with interpolation explicit property where it should be an implicit property",
+      annotatedSource: `\
+        <test bar="{{this.foo | json}}">{{bar | json}}</test>
+                     ~~~~~~~~`,
+      options: [{ properties: "implicit" }],
+      messageId: MESSAGE_IDS.properties.implicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test bar="{{foo | json}}">{{bar | json}}</test>
+                     ~~~~~~~~`,
     }),
 
     /**
