@@ -40,7 +40,6 @@ ruleTester.run(RULE_NAME, rule, {
 
     /**
      * Databinding.
-     * TODO: Databinding with extra spaces, tabs and newlines.
      */
     {
       // Explicit.
@@ -54,6 +53,64 @@ ruleTester.run(RULE_NAME, rule, {
     {
       // Other options shouldn't affect result.
       code: `<test [bar]="this.foo">{{this.bar}}</test>`,
+      options: [
+        {
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+
+    /**
+     * Databinding, with extra whitespaces and tabs.
+     */
+    {
+      // Explicit.
+      code: `<test [bar]="  this.foo  ">{{		this.bar		}}</test>`,
+    },
+    {
+      // Implicit.
+      code: `<test [bar]="  foo  ">{{		bar		}}</test>`,
+      options: [{ properties: "implicit" }],
+    },
+    {
+      // Other options shouldn't affect result.
+      code: `<test [bar]="  this.foo  ">{{		this.bar		}}</test>`,
+      options: [
+        {
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+
+    /**
+     * Databinding, with line-breaks.
+     */
+    {
+      // Explicit.
+      code: `<test [bar]="
+  this.foo
+">{{
+  this.bar
+}}</test>`,
+    },
+    {
+      // Implicit.
+      code: `<test [bar]="
+  foo
+">{{
+  bar
+}}</test>`,
+      options: [{ properties: "implicit" }],
+    },
+    {
+      // Other options shouldn't affect result.
+      code: `<test [bar]="
+  this.foo
+">{{
+  this.bar
+}}</test>`,
       options: [
         {
           variables: "explicit",
@@ -604,7 +661,7 @@ test {{
     /**
      * Interpolation, with pipes.
      */
-     convertAnnotatedSourceToFailureCase({
+    convertAnnotatedSourceToFailureCase({
       description:
         "it fails with interpolation implicit property where it should be an explicit property",
       annotatedSource: `\
