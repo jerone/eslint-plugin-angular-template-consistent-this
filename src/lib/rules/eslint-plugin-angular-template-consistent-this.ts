@@ -4,11 +4,11 @@ import type {
   ReferenceAst,
   VariableAst,
 } from "@angular/compiler";
-import { ImplicitReceiver, ThisReceiver } from "@angular/compiler";
 import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, PropertyReadWithParent, RuleOptions } from "../types";
+import Utils from "../utils";
 
 export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
 
@@ -148,21 +148,14 @@ function createRuleListener(
       //   templates.map((x: { name: any; }) => x.name).includes("pagination")
       // );
 
+      const isImplicitReceiver = Utils.isImplicitReceiver(node);
+      const isExplicitReceiver = Utils.isExplicitReceiver(node);
+
       // We're looking for `ThisReceiver` and `ImplicitReceiver`.
       // Everything else we're going to ignore.
-      // NOTE: currently `ThisReceiver` inherits from `ImplicitReceiver`, which might not be the case in the future.
-      // https://github.com/angular/angular/blob/05d996d8039b82fd0361a921224fdbf07c4b2c91/packages/compiler/src/expression_parser/ast.ts#L88-L100
-      if (
-        !(node.receiver instanceof ImplicitReceiver) &&
-        !(node.receiver instanceof ThisReceiver)
-      ) {
+      if (!isImplicitReceiver && !isExplicitReceiver) {
         return;
       }
-
-      const isExplicitReceiver = node.receiver instanceof ThisReceiver;
-      const isImplicitReceiver =
-        node.receiver instanceof ImplicitReceiver &&
-        !(node.receiver instanceof ThisReceiver); // `ThisReceiver` inherits from `ImplicitReceiver`.
 
       // Some globals are safe as they are.
       if (SAFE_GLOBALS.includes(node.name)) {
