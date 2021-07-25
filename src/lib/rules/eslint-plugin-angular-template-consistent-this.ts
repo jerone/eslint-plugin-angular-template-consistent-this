@@ -77,7 +77,7 @@ export default createESLintRule<Options, MessageIds>({
         "ESLint Angular Template consistent this for properties, variables & template references.",
       category: "Stylistic Issues",
       recommended: false,
-      //url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
+      // url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
     },
     fixable: "code",
     schema: [
@@ -115,237 +115,261 @@ export default createESLintRule<Options, MessageIds>({
         "Don't use explicit this for template references `{{prop}}`.",
     },
   },
-  create(
-    context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
-    [options]: Readonly<Options>
-  ): TSESLint.RuleListener {
-    ensureTemplateParser(context);
+  create: createRuleListener,
+});
 
-    const sourceCode = context.getSourceCode();
+function createRuleListener(
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+  [options]: Readonly<Options>
+): TSESLint.RuleListener {
+  ensureTemplateParser(context);
 
-    const variables: Array<VariableAst> = [];
-    const templates: Array<ReferenceAst> = [];
+  const variables: Array<VariableAst> = [];
+  const templates: Array<ReferenceAst> = [];
+
+  return {
+    // ["*"](node) {
+    //  console.log(node.name);
+    //  if (/*node.name === "pagination" || */!node.name)
+    //  	console.log(node);
+    // },
 
     /**
-     * Report explicit of implicit error to ESLint.
-     * @param {boolean} explicit True for explicit error, false for implicit error.
-     * @param {string} messageId Message identifier.
-     * @param {string} node Node.
+     * This visitor contains the scoped variables and global templates references.
+     * Variables should always be defined *before* property reading.
+     * But template references can be defined *after* where they are being read.
+     * See: https://angular.io/guide/structural-directives#template-input-variable
+     * @param {*} node
      */
-    const reportError = function (
-      explicit: boolean,
-      messageId: MessageIds,
-      node: PropertyReadWithParent | VariableAst | ReferenceAst | any
-    ): void {
-      // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
-      const loc: Readonly<TSESTree.SourceLocation> = {
-        start: sourceCode.getLocFromIndex(node.sourceSpan.start),
-        end: sourceCode.getLocFromIndex(node.sourceSpan.end),
-      };
-      const startIndex: number = sourceCode.getIndexFromLoc(loc.start);
-      // console.log(node);
-      // console.log("1 --------");
-      // console.log(node.parent);
-      // console.log("2 --------");
-      // console.log(node.parent.parent);
-      // console.log("3 --------");
-      // console.log(node.parent.parent.parent);
-      // console.log("4 --------");
-      // console.log(node.receiver);
-      // console.log("5 --------");
-      // console.log(node.parent.expressions);
-      // console.log("6 --------");
-      // console.log(loc, startIndex);
+    Template(node: EmbeddedTemplateAst): void {
+      variables.push(...node.variables);
+      templates.push(...node.references);
       // console.log(
-      //   sourceCode.getLocFromIndex(node.span.start),
-      //   sourceCode.getLocFromIndex(node.span.end)
+      //   "Template",
+      //   variables.map((x) => x.name),
+      //   templates.map((x) => x.name),
+      //   templates.map((x) => x.name).includes("pagination")
       // );
-      // console.log(
-      //   sourceCode.getLocFromIndex(node.sourceSpan.start),
-      //   sourceCode.getLocFromIndex(node.sourceSpan.end)
-      // );
-      // console.log(
-      //   sourceCode.getLocFromIndex(node.nameSpan.start),
-      //   sourceCode.getLocFromIndex(node.nameSpan.end)
-      // );
-      // console.log(node.sourceSpan);
-      // console.log(
-      //   {
-      //     start: {
-      //       line: node.sourceSpan.start.line + 1,
-      //       column: node.sourceSpan.start.col,
-      //     },
-      //     end: {
-      //       line: node.sourceSpan.end.line + 1,
-      //       column: node.sourceSpan.end.col,
-      //     },
-      //   }
-      // );
-      // console.log(isInterpolation(node.parent.type));
-      // //console.log(parserServices.convertNodeSourceSpanToLoc(node.sourceSpan));
+    },
 
-      context.report({
-        messageId,
-        data: { prop: node.name },
-        loc,
-        fix: (fixer: TSESLint.RuleFixer) => {
-          if (explicit) {
-            return fixer.insertTextBeforeRange(
-              [startIndex, startIndex],
-              "this."
-            );
-          } else {
-            return fixer.replaceTextRange(
-              [startIndex, startIndex + "this.".length],
-              ""
-            );
-          }
-        },
-      });
-    };
+    Element(node: ElementAst): void {
+      // if(node.name == "clr-dg-pagination")
+      // console.log("Element", node);
 
-    return {
-      // ["*"](node) {
-      //  console.log(node.name);
-      //  if (/*node.name === "pagination" || */!node.name)
-      //  	console.log(node);
-      // },
-
-      /**
-       * This visitor contains the scoped variables and global templates references.
-       * Variables should always be defined *before* property reading.
-       * But template references can be defined *after* where they are being read.
-       * See: https://angular.io/guide/structural-directives#template-input-variable
-       * @param {*} node
-       */
-      Template(node: EmbeddedTemplateAst): void {
-        variables.push(...node.variables);
+      if (node.references && node.references.length > 0) {
         templates.push(...node.references);
         // console.log(
-        //   "Template",
+        //   "Element",
         //   variables.map((x) => x.name),
         //   templates.map((x) => x.name),
         //   templates.map((x) => x.name).includes("pagination")
         // );
-      },
+      }
+    },
 
-      Element(node: ElementAst): void {
-        // if(node.name == "clr-dg-pagination")
-        // console.log("Element", node);
+    // Reference(node) {
+    //   console.log("Reference", node);
+    // },
 
-        if (node.references && node.references.length > 0) {
-          templates.push(...node.references);
-          // console.log(
-          //   "Element",
-          //   variables.map((x) => x.name),
-          //   templates.map((x) => x.name),
-          //   templates.map((x) => x.name).includes("pagination")
-          // );
+    PropertyRead(node: PropertyReadWithParent): void {
+      // console.log(
+      //   "PropertyRead",
+      //   node,
+      //   node.name,
+      //   node.name === "pagination" ? "!!!" : "",
+      //   variables.map((x: { name: any; }) => x.name),
+      //   templates.map((x: { name: any; }) => x.name),
+      //   templates.map((x: { name: any; }) => x.name).includes("pagination")
+      // );
+
+      // We're looking for `ThisReceiver` and `ImplicitReceiver`.
+      // Everything else we're going to ignore.
+      // NOTE: currently `ThisReceiver` inherits from `ImplicitReceiver`, which might not be the case in the future.
+      // https://github.com/angular/angular/blob/05d996d8039b82fd0361a921224fdbf07c4b2c91/packages/compiler/src/expression_parser/ast.ts#L88-L100
+      if (
+        !(node.receiver instanceof ImplicitReceiver) &&
+        !(node.receiver instanceof ThisReceiver)
+      ) {
+        return;
+      }
+
+      const isExplicitReceiver = node.receiver instanceof ThisReceiver;
+      const isImplicitReceiver =
+        node.receiver instanceof ImplicitReceiver &&
+        !(node.receiver instanceof ThisReceiver); // `ThisReceiver` inherits from `ImplicitReceiver`.
+
+      // Some globals are safe as they are.
+      if (SAFE_GLOBALS.includes(node.name)) {
+        return;
+      }
+
+      // 1) Template *input* variable (`let foo;`).
+      // Variables are defined before they are used.
+      if (variables.map((x: VariableAst) => x.name).includes(node.name)) {
+        if (options.variables === "explicit" && isImplicitReceiver) {
+          return reportError(
+            context,
+            true,
+            MESSAGE_IDS.variables.explicit,
+            node
+          );
+        } else if (options.variables === "implicit" && isExplicitReceiver) {
+          return reportError(
+            context,
+            false,
+            MESSAGE_IDS.variables.implicit,
+            node
+          );
         }
-      },
 
-      // Reference(node) {
-      //   console.log("Reference", node);
-      // },
+        return;
+      }
 
-      PropertyRead(node: PropertyReadWithParent): void {
-        // console.log(
-        //   "PropertyRead",
-        //   node,
-        //   node.name,
-        //   node.name === "pagination" ? "!!!" : "",
-        //   variables.map((x: { name: any; }) => x.name),
-        //   templates.map((x: { name: any; }) => x.name),
-        //   templates.map((x: { name: any; }) => x.name).includes("pagination")
-        // );
-
-        // We're looking for `ThisReceiver` and `ImplicitReceiver`.
-        // Everything else we're going to ignore.
-        // NOTE: currently `ThisReceiver` inherits from `ImplicitReceiver`, which might not be the case in the future.
-        // https://github.com/angular/angular/blob/05d996d8039b82fd0361a921224fdbf07c4b2c91/packages/compiler/src/expression_parser/ast.ts#L88-L100
-        if (
-          !(node.receiver instanceof ImplicitReceiver) &&
-          !(node.receiver instanceof ThisReceiver)
+      // 2) Template *reference* variable (`#template`).
+      // This will only catch templates that are defined *before* property reading.
+      if (templates.map((x: ReferenceAst) => x.name).includes(node.name)) {
+        if (options.templateReferences === "explicit" && isImplicitReceiver) {
+          return reportError(
+            context,
+            true,
+            MESSAGE_IDS.templateReferences.explicit,
+            node
+          );
+        } else if (
+          options.templateReferences === "implicit" &&
+          isExplicitReceiver
         ) {
-          return;
+          return reportError(
+            context,
+            false,
+            MESSAGE_IDS.templateReferences.implicit,
+            node
+          );
         }
 
-        const isExplicitReceiver = node.receiver instanceof ThisReceiver;
-        const isImplicitReceiver =
-          node.receiver instanceof ImplicitReceiver &&
-          !(node.receiver instanceof ThisReceiver); // `ThisReceiver` inherits from `ImplicitReceiver`.
+        return;
+      }
 
-        // Some globals are safe as they are.
-        if (SAFE_GLOBALS.includes(node.name)) {
-          return;
+      // 3) Check if property is part of an safe structural directives.
+      // This happens for templates that haven't been caught by check 2.
+      // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
+      if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
+        if (options.templateReferences === "explicit" && isImplicitReceiver) {
+          return reportError(
+            context,
+            true,
+            MESSAGE_IDS.templateReferences.explicit,
+            node
+          );
+        } else if (
+          options.templateReferences === "implicit" &&
+          isExplicitReceiver
+        ) {
+          return reportError(
+            context,
+            false,
+            MESSAGE_IDS.templateReferences.implicit,
+            node
+          );
         }
 
-        // 1) Template *input* variable (`let foo;`).
-        // Variables are defined before they are used.
-        if (variables.map((x: VariableAst) => x.name).includes(node.name)) {
-          if (options.variables === "explicit" && isImplicitReceiver) {
-            return reportError(true, MESSAGE_IDS.variables.explicit, node);
-          } else if (options.variables === "implicit" && isExplicitReceiver) {
-            return reportError(false, MESSAGE_IDS.variables.implicit, node);
-          }
+        return;
+      }
 
-          return;
-        }
+      // 4) Interpolation of databinding property.
+      if (options.properties === "explicit" && isImplicitReceiver) {
+        return reportError(
+          context,
+          true,
+          MESSAGE_IDS.properties.explicit,
+          node
+        );
+      } else if (options.properties === "implicit" && isExplicitReceiver) {
+        return reportError(
+          context,
+          false,
+          MESSAGE_IDS.properties.implicit,
+          node
+        );
+      }
+    },
+  };
+}
 
-        // 2) Template *reference* variable (`#template`).
-        // This will only catch templates that are defined *before* property reading.
-        if (templates.map((x: ReferenceAst) => x.name).includes(node.name)) {
-          if (options.templateReferences === "explicit" && isImplicitReceiver) {
-            return reportError(
-              true,
-              MESSAGE_IDS.templateReferences.explicit,
-              node
-            );
-          } else if (
-            options.templateReferences === "implicit" &&
-            isExplicitReceiver
-          ) {
-            return reportError(
-              false,
-              MESSAGE_IDS.templateReferences.implicit,
-              node
-            );
-          }
+/**
+ * Report explicit of implicit error to ESLint.
+ * @param {boolean} explicit True for explicit error, false for implicit error.
+ * @param {string} messageId Message identifier.
+ * @param {string} node Node.
+ */
+function reportError(
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+  explicit: boolean,
+  messageId: MessageIds,
+  node: PropertyReadWithParent | VariableAst | ReferenceAst | any
+): void {
+  const sourceCode = context.getSourceCode();
 
-          return;
-        }
+  // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
+  const loc: Readonly<TSESTree.SourceLocation> = {
+    start: sourceCode.getLocFromIndex(node.sourceSpan.start),
+    end: sourceCode.getLocFromIndex(node.sourceSpan.end),
+  };
+  const startIndex: number = sourceCode.getIndexFromLoc(loc.start);
+  // console.log(node);
+  // console.log("1 --------");
+  // console.log(node.parent);
+  // console.log("2 --------");
+  // console.log(node.parent.parent);
+  // console.log("3 --------");
+  // console.log(node.parent.parent.parent);
+  // console.log("4 --------");
+  // console.log(node.receiver);
+  // console.log("5 --------");
+  // console.log(node.parent.expressions);
+  // console.log("6 --------");
+  // console.log(loc, startIndex);
+  // console.log(
+  //   sourceCode.getLocFromIndex(node.span.start),
+  //   sourceCode.getLocFromIndex(node.span.end)
+  // );
+  // console.log(
+  //   sourceCode.getLocFromIndex(node.sourceSpan.start),
+  //   sourceCode.getLocFromIndex(node.sourceSpan.end)
+  // );
+  // console.log(
+  //   sourceCode.getLocFromIndex(node.nameSpan.start),
+  //   sourceCode.getLocFromIndex(node.nameSpan.end)
+  // );
+  // console.log(node.sourceSpan);
+  // console.log(
+  //   {
+  //     start: {
+  //       line: node.sourceSpan.start.line + 1,
+  //       column: node.sourceSpan.start.col,
+  //     },
+  //     end: {
+  //       line: node.sourceSpan.end.line + 1,
+  //       column: node.sourceSpan.end.col,
+  //     },
+  //   }
+  // );
+  // console.log(isInterpolation(node.parent.type));
+  // //console.log(parserServices.convertNodeSourceSpanToLoc(node.sourceSpan));
 
-        // 3) Check if property is part of an safe structural directives.
-        // This happens for templates that haven't been caught by check 2.
-        // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
-        if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
-          if (options.templateReferences === "explicit" && isImplicitReceiver) {
-            return reportError(
-              true,
-              MESSAGE_IDS.templateReferences.explicit,
-              node
-            );
-          } else if (
-            options.templateReferences === "implicit" &&
-            isExplicitReceiver
-          ) {
-            return reportError(
-              false,
-              MESSAGE_IDS.templateReferences.implicit,
-              node
-            );
-          }
-
-          return;
-        }
-
-        // 4) Interpolation of databinding property.
-        if (options.properties === "explicit" && isImplicitReceiver) {
-          return reportError(true, MESSAGE_IDS.properties.explicit, node);
-        } else if (options.properties === "implicit" && isExplicitReceiver) {
-          return reportError(false, MESSAGE_IDS.properties.implicit, node);
-        }
-      },
-    };
-  },
-});
+  context.report({
+    messageId,
+    data: { prop: node.name },
+    loc,
+    fix: (fixer: TSESLint.RuleFixer) => {
+      if (explicit) {
+        return fixer.insertTextBeforeRange([startIndex, startIndex], "this.");
+      } else {
+        return fixer.replaceTextRange(
+          [startIndex, startIndex + "this.".length],
+          ""
+        );
+      }
+    },
+  });
+}
