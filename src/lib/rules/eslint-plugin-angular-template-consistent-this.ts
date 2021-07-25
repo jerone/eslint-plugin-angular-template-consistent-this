@@ -1,48 +1,14 @@
-import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
-import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
 import type {
-  AST,
   ElementAst,
   EmbeddedTemplateAst,
-  PropertyRead,
   ReferenceAst,
-  TmplAstElement,
   VariableAst,
 } from "@angular/compiler";
-import { ThisReceiver } from "@angular/compiler";
-import { ImplicitReceiver } from "@angular/compiler";
-
-type groups = "properties" | "variables" | "templateReferences";
-type implicitExplicit = "implicit" | "explicit";
-type messageIdKeys = { [_ in groups]: { [_ in implicitExplicit]: MessageIds } };
-type Options = Array<{ [_ in groups]: implicitExplicit }>;
-export type MessageIds =
-  | "explicitThisProperties"
-  | "implicitThisProperties"
-  | "explicitThisVariables"
-  | "implicitThisVariables"
-  | "explicitThisTemplateReferences"
-  | "implicitThisTemplateReferences";
-type PropertyReadWithParent = PropertyRead & {
-  receiver: AST;
-} & {
-  parent: TmplAstElement & { parent: TmplAstElement };
-};
-
-export const MESSAGE_IDS: messageIdKeys = {
-  properties: {
-    explicit: "explicitThisProperties",
-    implicit: "implicitThisProperties",
-  },
-  variables: {
-    explicit: "explicitThisVariables",
-    implicit: "implicitThisVariables",
-  },
-  templateReferences: {
-    explicit: "explicitThisTemplateReferences",
-    implicit: "implicitThisTemplateReferences",
-  },
-};
+import { ImplicitReceiver, ThisReceiver } from "@angular/compiler";
+import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
+import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
+import { MESSAGE_IDS } from "../message-ids";
+import type { MessageIds, PropertyReadWithParent, RuleOptions } from "../types";
 
 export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
 
@@ -60,7 +26,7 @@ const SAFE_GLOBALS = [
   "$event", // EventEmitter.
 ];
 
-export default createESLintRule<Options, MessageIds>({
+export default createESLintRule<RuleOptions, MessageIds>({
   name: RULE_NAME,
   defaultOptions: [
     {
@@ -119,8 +85,8 @@ export default createESLintRule<Options, MessageIds>({
 });
 
 function createRuleListener(
-  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
-  [options]: Readonly<Options>
+  context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
+  [options]: Readonly<RuleOptions>
 ): TSESLint.RuleListener {
   ensureTemplateParser(context);
 
@@ -303,7 +269,7 @@ function createRuleListener(
  * @param {string} node Node.
  */
 function reportError(
-  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
   explicit: boolean,
   messageId: MessageIds,
   node: PropertyReadWithParent | VariableAst | ReferenceAst | any
