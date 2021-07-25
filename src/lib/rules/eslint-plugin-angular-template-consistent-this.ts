@@ -94,12 +94,6 @@ function createRuleListener(
   const templates: Array<ReferenceAst> = [];
 
   return {
-    // ["*"](node) {
-    //  console.log(node.name);
-    //  if (/*node.name === "pagination" || */!node.name)
-    //  	console.log(node);
-    // },
-
     /**
      * This visitor contains the scoped variables and global templates references.
      * Variables should always be defined *before* property reading.
@@ -110,44 +104,15 @@ function createRuleListener(
     Template(node: EmbeddedTemplateAst): void {
       variables.push(...node.variables);
       templates.push(...node.references);
-      // console.log(
-      //   "Template",
-      //   variables.map((x) => x.name),
-      //   templates.map((x) => x.name),
-      //   templates.map((x) => x.name).includes("pagination")
-      // );
     },
 
     Element(node: ElementAst): void {
-      // if(node.name == "clr-dg-pagination")
-      // console.log("Element", node);
-
       if (node.references && node.references.length > 0) {
         templates.push(...node.references);
-        // console.log(
-        //   "Element",
-        //   variables.map((x) => x.name),
-        //   templates.map((x) => x.name),
-        //   templates.map((x) => x.name).includes("pagination")
-        // );
       }
     },
 
-    // Reference(node) {
-    //   console.log("Reference", node);
-    // },
-
     PropertyRead(node: PropertyReadWithParent): void {
-      // console.log(
-      //   "PropertyRead",
-      //   node,
-      //   node.name,
-      //   node.name === "pagination" ? "!!!" : "",
-      //   variables.map((x: { name: any; }) => x.name),
-      //   templates.map((x: { name: any; }) => x.name),
-      //   templates.map((x: { name: any; }) => x.name).includes("pagination")
-      // );
-
       const isImplicitReceiver = Utils.isImplicitReceiver(node);
       const isExplicitReceiver = Utils.isExplicitReceiver(node);
 
@@ -269,52 +234,11 @@ function reportError(
 ): void {
   const sourceCode = context.getSourceCode();
 
-  // const additionalOffset = isInterpolation(node.parent.type) ? -1 : 0;
   const loc: Readonly<TSESTree.SourceLocation> = {
     start: sourceCode.getLocFromIndex(node.sourceSpan.start),
     end: sourceCode.getLocFromIndex(node.sourceSpan.end),
   };
   const startIndex: number = sourceCode.getIndexFromLoc(loc.start);
-  // console.log(node);
-  // console.log("1 --------");
-  // console.log(node.parent);
-  // console.log("2 --------");
-  // console.log(node.parent.parent);
-  // console.log("3 --------");
-  // console.log(node.parent.parent.parent);
-  // console.log("4 --------");
-  // console.log(node.receiver);
-  // console.log("5 --------");
-  // console.log(node.parent.expressions);
-  // console.log("6 --------");
-  // console.log(loc, startIndex);
-  // console.log(
-  //   sourceCode.getLocFromIndex(node.span.start),
-  //   sourceCode.getLocFromIndex(node.span.end)
-  // );
-  // console.log(
-  //   sourceCode.getLocFromIndex(node.sourceSpan.start),
-  //   sourceCode.getLocFromIndex(node.sourceSpan.end)
-  // );
-  // console.log(
-  //   sourceCode.getLocFromIndex(node.nameSpan.start),
-  //   sourceCode.getLocFromIndex(node.nameSpan.end)
-  // );
-  // console.log(node.sourceSpan);
-  // console.log(
-  //   {
-  //     start: {
-  //       line: node.sourceSpan.start.line + 1,
-  //       column: node.sourceSpan.start.col,
-  //     },
-  //     end: {
-  //       line: node.sourceSpan.end.line + 1,
-  //       column: node.sourceSpan.end.col,
-  //     },
-  //   }
-  // );
-  // console.log(isInterpolation(node.parent.type));
-  // //console.log(parserServices.convertNodeSourceSpanToLoc(node.sourceSpan));
 
   context.report({
     messageId,
