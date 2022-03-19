@@ -463,7 +463,6 @@ ruleTester.run(RULE_NAME, rule, {
      * NgTemplateOutlet directive `*ngTemplateOutlet` with context and
      * templates that are defined *after* property reading.
      */
-    // TODO: template before property reading.
     {
       /* See https://angular.io/api/common/NgTemplateOutlet#example
         ```
@@ -494,6 +493,82 @@ ruleTester.run(RULE_NAME, rule, {
       code: `
         <ng-container *ngTemplateOutlet="greetings; context: myContext"></ng-container>
         <ng-template #greetings let-person="firstName"><span>Beste {{person}}</span></ng-template>`,
+      options: [
+        {
+          properties: "implicit",
+          variables: "implicit",
+          templateReferences: "implicit",
+        },
+      ],
+    },
+
+    /**
+     * Template *reference* variable (`#template`) accessed via databinding.
+     */
+    {
+      code: `
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="test_identifier.property"></test-elm-child>
+        </test-elm-with-id>`,
+    },
+    {
+      // Explicit.
+      code: `
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="this.test_identifier.property"></test-elm-child>
+        </test-elm-with-id>`,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+    {
+      // Implicit.
+      code: `
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="test_identifier.property"></test-elm-child>
+        </test-elm-with-id>`,
+      options: [
+        {
+          properties: "implicit",
+          variables: "implicit",
+          templateReferences: "implicit",
+        },
+      ],
+    },
+
+    /**
+     * Template *reference* variable (`#template`) accessed via interpolation.
+     */
+    {
+      code: `
+        <test-elm-with-id #test_identifier>
+          {{ test_identifier.property }}
+        </test-elm-with-id>`,
+    },
+    {
+      // Explicit.
+      code: `
+        <test-elm-with-id #test_identifier>
+          {{ this.test_identifier.property }}
+        </test-elm-with-id>`,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+    },
+    {
+      // Implicit.
+      code: `
+        <test-elm-with-id #test_identifier>
+          {{ test_identifier.property }}
+        </test-elm-with-id>`,
       options: [
         {
           properties: "implicit",

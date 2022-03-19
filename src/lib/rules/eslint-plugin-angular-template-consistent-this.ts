@@ -107,7 +107,7 @@ function createRuleListener(
       templates.push(...node.references);
     },
 
-    Element(node: TmplAstElement): void {
+    ["Element,Element$1"](node: TmplAstElement): void {
       if (node.references && node.references.length > 0) {
         templates.push(...node.references);
       }
