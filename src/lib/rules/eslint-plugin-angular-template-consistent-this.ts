@@ -1,10 +1,10 @@
 import type {
-  ElementAst,
-  EmbeddedTemplateAst,
-  ReferenceAst,
-  VariableAst,
-} from "@angular/compiler";
-import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
+  TmplAstElement,
+  TmplAstReference,
+  TmplAstTemplate,
+  TmplAstVariable,
+} from "@angular-eslint/bundled-angular-compiler";
+import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, PropertyReadWithParent, RuleOptions } from "../types";
@@ -26,24 +26,25 @@ const SAFE_GLOBALS = [
   "$event", // EventEmitter.
 ];
 
+const defaultOptions: Readonly<RuleOptions> = [
+  {
+    properties: "explicit",
+    variables: "implicit",
+    templateReferences: "implicit",
+  },
+];
+
 export default createESLintRule<RuleOptions, MessageIds>({
   name: RULE_NAME,
-  defaultOptions: [
-    {
-      properties: "explicit",
-      variables: "implicit",
-      templateReferences: "implicit",
-    },
-  ],
-
+  defaultOptions,
   meta: {
     type: "suggestion",
+    // eslint-disable-next-line eslint-plugin/require-meta-docs-url
     docs: {
       description:
         "ESLint Angular Template consistent this for properties, variables & template references.",
-      category: "Stylistic Issues",
       recommended: false,
-      // url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
+      //url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
     },
     fixable: "code",
     schema: [
@@ -90,8 +91,8 @@ function createRuleListener(
 ): TSESLint.RuleListener {
   ensureTemplateParser(context);
 
-  const variables: Array<VariableAst> = [];
-  const templates: Array<ReferenceAst> = [];
+  const variables: Array<TmplAstVariable> = [];
+  const templates: Array<TmplAstReference> = [];
 
   return {
     /**
@@ -101,12 +102,12 @@ function createRuleListener(
      * See: https://angular.io/guide/structural-directives#template-input-variable
      * @param {*} node
      */
-    Template(node: EmbeddedTemplateAst): void {
+    Template(node: TmplAstTemplate): void {
       variables.push(...node.variables);
       templates.push(...node.references);
     },
 
-    Element(node: ElementAst): void {
+    Element(node: TmplAstElement): void {
       if (node.references && node.references.length > 0) {
         templates.push(...node.references);
       }
@@ -129,7 +130,7 @@ function createRuleListener(
 
       // 1) Template *input* variable (`let foo;`).
       // Variables are defined before they are used.
-      if (variables.map((x: VariableAst) => x.name).includes(node.name)) {
+      if (variables.map((x: TmplAstVariable) => x.name).includes(node.name)) {
         if (options.variables === "explicit" && isImplicitReceiver) {
           return reportError(
             context,
@@ -151,7 +152,7 @@ function createRuleListener(
 
       // 2) Template *reference* variable (`#template`).
       // This will only catch templates that are defined *before* property reading.
-      if (templates.map((x: ReferenceAst) => x.name).includes(node.name)) {
+      if (templates.map((x: TmplAstReference) => x.name).includes(node.name)) {
         if (options.templateReferences === "explicit" && isImplicitReceiver) {
           return reportError(
             context,
@@ -230,7 +231,7 @@ function reportError(
   context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
   explicit: boolean,
   messageId: MessageIds,
-  node: PropertyReadWithParent | VariableAst | ReferenceAst | any
+  node: PropertyReadWithParent
 ): void {
   const sourceCode = context.getSourceCode();
 

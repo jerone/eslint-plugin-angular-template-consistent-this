@@ -1,5 +1,8 @@
-import type { PropertyRead } from "@angular/compiler";
-import { ImplicitReceiver, ThisReceiver } from "@angular/compiler";
+import type { PropertyRead } from "@angular-eslint/bundled-angular-compiler";
+import {
+  ImplicitReceiver,
+  ThisReceiver,
+} from "@angular-eslint/bundled-angular-compiler";
 
 /**
  * Detect if a given `node` is explicit receiver.

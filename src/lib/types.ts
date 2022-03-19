@@ -1,4 +1,7 @@
-import type { PropertyRead, TmplAstElement } from "@angular/compiler";
+import type {
+  PropertyRead,
+  TmplAstElement,
+} from "@angular-eslint/bundled-angular-compiler";
 
 /**
  * The groups of nodes processed by this rule.

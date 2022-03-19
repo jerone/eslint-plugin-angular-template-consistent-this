@@ -725,7 +725,7 @@ test {{
         "it fails with implicit properties & variables & template references where it should be explicit properties & variables & template references inside NgIf directive",
       annotatedSource: `
         <test4 *ngIf="foo as bar; then thenBlock else elseBlock">{{bar}}</test4>
-                      ~~~              ^^^^^^^^^      @@@@@@@@@    !!!.
+                      ~~~              ^^^^^^^^^      @@@@@@@@@    %%%.
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
       options: [
@@ -752,7 +752,7 @@ test {{
           data: { prop: "elseBlock" },
         },
         {
-          char: "!",
+          char: "%",
           messageId: MESSAGE_IDS.variables.explicit,
           data: { prop: "bar" },
         },
@@ -768,7 +768,7 @@ test {{
         "it fails with explicit properties & variables & template references where it should be implicit properties & variables & template references inside NgIf directive",
       annotatedSource: `
         <test *ngIf="this.foo as bar; then this.thenBlock else this.elseBlock">{{this.bar}}</test>
-                     ~~~~~~~~              ^^^^^^^^^^^^^^      @@@@@@@@@@@@@@    !!!!!!!!.
+                     ~~~~~~~~              ^^^^^^^^^^^^^^      @@@@@@@@@@@@@@    %%%%%%%%.
         <ng-template #thenBlock>...</ng-template>
         <ng-template #elseBlock>...</ng-template>`,
       options: [
@@ -795,7 +795,7 @@ test {{
           data: { prop: "elseBlock" },
         },
         {
-          char: "!",
+          char: "%",
           messageId: MESSAGE_IDS.variables.implicit,
           data: { prop: "bar" },
         },
@@ -817,7 +817,7 @@ test {{
         <li *ngFor="let item of items; index as i; trackBy: trackByFn">
                                 ~~~~~                       ^^^^^^^^^.
           <test>{{i}} {{item}}</test>
-                  @     !!!!.
+                  @     %%%%.
         </li>`,
       options: [
         {
@@ -843,7 +843,7 @@ test {{
           data: { prop: "i" },
         },
         {
-          char: "!",
+          char: "%",
           messageId: MESSAGE_IDS.variables.explicit,
           data: { prop: "item" },
         },
@@ -862,7 +862,7 @@ test {{
         <li *ngFor="let item of this.items; index as i; trackBy: this.trackByFn">
                                 ~~~~~~~~~~                       ^^^^^^^^^^^^^^.
           <test>{{this.i}} {{this.item}}</test>
-                  @@@@@@     !!!!!!!!!.
+                  @@@@@@     %%%%%%%%%.
         </li>`,
       options: [
         {
@@ -888,7 +888,7 @@ test {{
           data: { prop: "i" },
         },
         {
-          char: "!",
+          char: "%",
           messageId: MESSAGE_IDS.variables.implicit,
           data: { prop: "item" },
         },

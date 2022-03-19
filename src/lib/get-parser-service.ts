@@ -1,8 +1,40 @@
-import type { ParseSourceSpan, TmplAstElement } from "@angular/compiler";
-import type { TSESLint, TSESTree } from "@typescript-eslint/experimental-utils";
-import { ESLintUtils } from "@typescript-eslint/experimental-utils";
+// Copied from https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin-template/src/utils/create-eslint-rule.ts
 
-export const createESLintRule = ESLintUtils.RuleCreator(
+import type {
+  ParseSourceSpan,
+  TmplAstElement,
+} from "@angular-eslint/bundled-angular-compiler";
+import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
+import { ESLintUtils } from "@typescript-eslint/utils";
+
+/**
+ * We need to patch the RuleCreator in order to preserve the defaultOptions
+ * to use as part of documentation generation.
+ */
+const patchedRuleCreator: typeof ESLintUtils.RuleCreator = (urlCreator) => {
+  return function createRule({ name, meta, defaultOptions, create }) {
+    return {
+      meta: Object.assign(Object.assign({}, meta), {
+        docs: Object.assign(Object.assign({}, meta.docs), {
+          url: urlCreator(name),
+        }),
+      }),
+      defaultOptions,
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      create(context) {
+        const optionsWithDefault = ESLintUtils.applyDefault(
+          defaultOptions,
+          context.options
+        );
+        return create(context, optionsWithDefault);
+      },
+    };
+  };
+};
+
+patchedRuleCreator.withoutDocs = ESLintUtils.RuleCreator.withoutDocs;
+
+export const createESLintRule = patchedRuleCreator(
   (_ruleName) =>
     `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md`
 );
