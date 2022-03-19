@@ -7,9 +7,13 @@
   "contributors": [],
   "keywords": [
     "eslint",
+    "eslintrule",
     "eslint-rule",
+    "eslintplugin",
+    "eslint-plugin",
     "angular",
-    "angular-template"
+    "angular-template",
+    "html"
   ],
   "repository": {
     "type": "git",
