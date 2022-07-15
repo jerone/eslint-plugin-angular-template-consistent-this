@@ -3,11 +3,12 @@ import type {
   TmplAstReference,
   TmplAstTemplate,
   TmplAstVariable,
+  PropertyRead,
 } from "@angular-eslint/bundled-angular-compiler";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
 import { MESSAGE_IDS } from "../message-ids";
-import type { MessageIds, PropertyReadWithParent, RuleOptions } from "../types";
+import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";
 
 export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
@@ -113,7 +114,7 @@ function createRuleListener(
       }
     },
 
-    PropertyRead(node: PropertyReadWithParent): void {
+    PropertyRead(node: AstWithParent<PropertyRead>): void {
       const isImplicitReceiver = Utils.isImplicitReceiver(node);
       const isExplicitReceiver = Utils.isExplicitReceiver(node);
 
@@ -231,13 +232,16 @@ function reportError(
   context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
   explicit: boolean,
   messageId: MessageIds,
-  node: PropertyReadWithParent
+  node: AstWithParent<PropertyRead>
 ): void {
   const sourceCode = context.getSourceCode();
 
+  // There is a bug in data-binding parser that ignores whitespaces (and line-breaks) before the expression. See #1.
+  const offset = Utils.getLocOffsetFix(node);
+
   const loc: Readonly<TSESTree.SourceLocation> = {
-    start: sourceCode.getLocFromIndex(node.sourceSpan.start),
-    end: sourceCode.getLocFromIndex(node.sourceSpan.end),
+    start: sourceCode.getLocFromIndex(node.sourceSpan.start - offset),
+    end: sourceCode.getLocFromIndex(node.sourceSpan.end - offset),
   };
   const startIndex: number = sourceCode.getIndexFromLoc(loc.start);
 

@@ -1,7 +1,4 @@
-import type {
-  PropertyRead,
-  TmplAstElement,
-} from "@angular-eslint/bundled-angular-compiler";
+import type { AST } from "@angular-eslint/bundled-angular-compiler";
 
 /**
  * The groups of nodes processed by this rule.
@@ -37,8 +34,8 @@ export type MessageIdKeys = {
 };
 
 /**
- * PropertyRead with parent node type.
+ * AST with parent node type.
  */
-export type PropertyReadWithParent = PropertyRead & {
-  parent: TmplAstElement & { parent: TmplAstElement };
+export type AstWithParent<T extends AST> = T & {
+  parent: AstWithParent<T>;
 };

@@ -617,6 +617,76 @@ ruleTester.run(RULE_NAME, rule, {
     }),
 
     /**
+     * Databinding, with extra whitespaces and tabs.
+     */
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding implicit property where it should be an explicit property",
+      annotatedSource: `\
+        <test [bar]="  		foo  		">{{this.bar}}</test>
+                       		~~~`,
+      messageId: MESSAGE_IDS.properties.explicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test [bar]="  		this.foo  		">{{this.bar}}</test>
+                       		~~~`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding explicit property where it should be an implicit property",
+      annotatedSource: `\
+        <test [bar]="  		this.foo  		">{{bar}}</test>
+                       		~~~~~~~~`,
+      options: [{ properties: "implicit" }],
+      messageId: MESSAGE_IDS.properties.implicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test [bar]="  		foo  		">{{bar}}</test>
+                       		~~~~~~~~`,
+    }),
+
+    /**
+     * Databinding, with line-breaks.
+     */
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding implicit property where it should be an explicit property",
+      annotatedSource: `\
+        <test [bar]="
+          
+          foo
+          ~~~
+        ">{{this.bar}}</test>`,
+      messageId: MESSAGE_IDS.properties.explicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test [bar]="
+          
+          this.foo
+          ~~~
+        ">{{this.bar}}</test>`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding explicit property where it should be an implicit property",
+      annotatedSource: `\
+        <test [bar]="
+          
+          this.foo
+          ~~~~~~~~
+        ">{{bar}}</test>`,
+      options: [{ properties: "implicit" }],
+      messageId: MESSAGE_IDS.properties.implicit,
+      data: { prop: "foo" },
+      annotatedOutput: `\
+        <test [bar]="
+          
+          foo
+          ~~~~~~~~
+        ">{{bar}}</test>`,
+    }),
+
+    /**
      * Interpolation.
      */
     convertAnnotatedSourceToFailureCase({
