@@ -1,4 +1,4 @@
-// Copied from https://github.com/angular-eslint/angular-eslint/blob/master/packages/utils/src/test-helpers.ts
+// Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/convert-annotated-source-to-failure-case.ts
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
