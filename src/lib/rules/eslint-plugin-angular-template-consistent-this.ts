@@ -40,12 +40,11 @@ export default createESLintRule<RuleOptions, MessageIds>({
   defaultOptions,
   meta: {
     type: "suggestion",
-    // eslint-disable-next-line eslint-plugin/require-meta-docs-url
+    // eslint-disable-next-line eslint-plugin/require-meta-docs-url -- Url is set in `createESLintRule`.
     docs: {
       description:
         "ESLint Angular Template consistent this for properties, variables & template references.",
       recommended: false,
-      //url: "https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md",
     },
     fixable: "code",
     schema: [
