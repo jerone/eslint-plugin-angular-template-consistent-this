@@ -839,26 +839,46 @@ test {{
       description:
         "it fails with implicit property where it should be an explicit property, ignoring sub-properties",
       annotatedSource: `\
-        <test2 bar="{{ foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
-                       ~~~`,
-      messageId: MESSAGE_IDS.properties.explicit,
-      data: { prop: "foo" },
+        <test2 [bar]="foo.bar.baz">{{ foo.bar.baz }}</test2>
+                      ~~~             ^^^.`,
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+          data: { prop: "foo" },
+        },
+        {
+          char: "^",
+          messageId: MESSAGE_IDS.properties.explicit,
+          data: { prop: "foo" },
+        },
+      ],
       annotatedOutput: `\
-        <test2 bar="{{ this.foo.bar.baz }}">{{ this.foo.bar.baz }}</test2>
-                       `,
+        <test2 [bar]="this.foo.bar.baz">{{ this.foo.bar.baz }}</test2>
+                                      .`,
     }),
     convertAnnotatedSourceToFailureCase({
       description:
         "it fails with explicit property where it should be an implicit property, ignoring sub-properties",
       annotatedSource: `\
-        <test3 bar="{{ this.foo.bar.baz }}">{{ foo.bar.baz }}</test3>
-                       ~~~~~~~~`,
+        <test3 [bar]="this.foo.bar.baz">{{ this.foo.bar.baz }}</test3>
+                      ~~~~~~~~             ^^^^^^^^.`,
       options: [{ properties: "implicit" }],
-      messageId: MESSAGE_IDS.properties.implicit,
-      data: { prop: "foo" },
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.implicit,
+          data: { prop: "foo" },
+        },
+        {
+          char: "^",
+          messageId: MESSAGE_IDS.properties.implicit,
+          data: { prop: "foo" },
+        },
+      ],
       annotatedOutput: `\
-        <test3 bar="{{ foo.bar.baz }}">{{ foo.bar.baz }}</test3>
-                       `,
+        <test3 [bar]="foo.bar.baz">{{ foo.bar.baz }}</test3>
+                                           .`,
     }),
 
     /**
