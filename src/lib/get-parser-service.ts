@@ -1,4 +1,4 @@
-// Copied from https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin-template/src/utils/create-eslint-rule.ts
+// Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/utils/create-eslint-rule.ts
 
 import type {
   ParseSourceSpan,
