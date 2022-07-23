@@ -1,12 +1,14 @@
 import type {
-  PropertyRead,
   AST,
+  TmplAstNode,
 } from "@angular-eslint/bundled-angular-compiler";
 import {
+  Binary,
   ImplicitReceiver,
-  Interpolation,
   ThisReceiver,
+  PropertyRead,
   ASTWithSource,
+  TmplAstBoundAttribute,
 } from "@angular-eslint/bundled-angular-compiler";
 import type { TSESTree } from "@typescript-eslint/utils";
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
@@ -38,20 +40,11 @@ function isImplicitReceiver(node: PropertyRead): boolean {
 }
 
 /**
- * Detect if a given `node` is an interpolation.
- * @param node A node.
- * @returns `true` if the `node` is an interpolation.
- */
-function isInterpolation(node: AST): boolean {
-  return node instanceof Interpolation;
-}
-
-/**
  * Detect if a given `node` is an AST with source.
  * @param node A node.
  * @returns `true` if the `node` is an AST with source.
  */
-function isASTWithSource(node: AST): boolean {
+function isASTWithSource(node: AST | TmplAstNode): boolean {
   return node instanceof ASTWithSource;
 }
 
@@ -70,13 +63,16 @@ function isProgram(node: unknown): node is TSESTree.Program {
  * @param predicate A predicate to match the wanted parent.
  * @returns The nearest node that matches the `predicate`.
  */
-function getNearestNodeFrom<T extends AST, Tout extends AST>(
+function getNearestNodeFrom<
+  T extends AST | TmplAstNode,
+  Tout extends AST | TmplAstNode
+>(
   { parent }: AstWithParent<T | Tout>,
-  predicate: (parent: AST) => boolean
-): Tout | null {
+  predicate: (parent: AST | TmplAstNode) => boolean
+): AstWithParent<Tout> | null {
   while (parent && !isProgram(parent)) {
     if (predicate(parent)) {
-      return parent as Tout;
+      return parent as AstWithParent<Tout>;
     }
 
     parent = parent.parent;
@@ -86,32 +82,68 @@ function getNearestNodeFrom<T extends AST, Tout extends AST>(
 }
 
 /**
- * There is a bug in data-binding parser that ignores whitespaces (and line-breaks) before the expression.
+ * Check if all parents of a given `node` are PropertyRead until the source.
+ * @param node A node with parent.
+ * @returns `true` if all parents are PropertyRead.
+ */
+function allParentsArePropertiesUntilSource<T extends AST>(
+  node: AstWithParent<T>
+): boolean {
+  let isAllPropertyRead = false;
+  while (node.parent && !isASTWithSource(node.parent)) {
+    if (!(node.parent instanceof PropertyRead)) {
+      return false;
+    }
+    isAllPropertyRead = true;
+    node = node.parent;
+  }
+  return isAllPropertyRead;
+}
+
+/**
+ * There is a bug in AST parser that returns the wrong locations for data-binding.
  * See #1.
  *
  * @param node A node.
  * @returns The LOC offset.
  */
-function getLocOffsetFix(node: AstWithParent<PropertyRead>): number {
-  // This issue only applies for data-binding.
-  // But there is no data-binding type, so ignore interpolation.
-  const parentInterpolation = getNearestNodeFrom<PropertyRead, Interpolation>(
+function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
+  // This issue only applies for data-binding. Ignore interpolation.
+  const astBoundAttribute = getNearestNodeFrom<T, TmplAstBoundAttribute>(
     node,
-    isInterpolation
+    (n) => n instanceof TmplAstBoundAttribute
   );
-  if (parentInterpolation !== null) return 0;
+  if (astBoundAttribute === null) {
+    return 0;
+  }
 
   // We need access to the source code to calculate the offset.
-  const parentWithSource = getNearestNodeFrom<PropertyRead, ASTWithSource>(
+  const astWithSource = getNearestNodeFrom<T, ASTWithSource>(
     node,
     isASTWithSource
   );
-  if (parentWithSource === null || parentWithSource.source === null) return 0;
+  if (astWithSource === null || !astWithSource.source) {
+    return 0;
+  }
+
+  // When child of ASTWithSource is Binary, use that span.
+  if (astWithSource.ast instanceof Binary) {
+    return astWithSource.ast.span.start;
+  }
+
+  // When all children tree of ASTWithSource are PropertyRead, use that span.
+  if (
+    node instanceof PropertyRead &&
+    allParentsArePropertiesUntilSource(node)
+  ) {
+    return node.span.start;
+  }
 
   // Get all the whitespaces (including line-breaks) before the expression.
-  const result = /^[\r\n\s\t]+/gm.exec(parentWithSource.source);
+  const result = /^[\r\n\s\t]+/gm.exec(astWithSource.source);
   if (result !== null && result.length > 0) {
-    return result[0].length;
+    const offset = result[0].length;
+    return offset;
   }
 
   return 0;

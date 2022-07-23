@@ -235,7 +235,7 @@ function reportError(
 ): void {
   const sourceCode = context.getSourceCode();
 
-  // There is a bug in data-binding parser that ignores whitespaces (and line-breaks) before the expression. See #1.
+  // There is a bug in AST parser that returns the wrong locations for data-binding. See #1.
   const offset = Utils.getLocOffsetFix(node);
 
   const loc: Readonly<TSESTree.SourceLocation> = {

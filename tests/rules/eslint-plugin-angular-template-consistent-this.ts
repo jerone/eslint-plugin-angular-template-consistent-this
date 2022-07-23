@@ -1026,8 +1026,8 @@ test {{
       annotatedSource: `
         <li *ngFor="let item of this.items; index as i; trackBy: this.trackByFn">
                                 ~~~~~~~~~~                       ^^^^^^^^^^^^^^.
-          <test>{{this.i}} {{this.item}}</test>
-                  @@@@@@     %%%%%%%%%.
+          <test-ng-for>{{this.i}} {{this.item}}</test-ng-for>
+                         @@@@@@     %%%%%%%%%.
         </li>`,
       options: [
         {
@@ -1061,9 +1061,86 @@ test {{
       annotatedOutput: `
         <li *ngFor="let item of items; index as i; trackBy: trackByFn">
                                                                                .
-          <test>{{i}} {{item}}</test>
-                             .
+          <test-ng-for>{{i}} {{item}}</test-ng-for>
+                                    .
         </li>`,
+    }),
+
+    /**
+     * Databinding with weird indentation.
+     */
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding implicit property where it should be an explicit property",
+      annotatedSource: `\
+					<test
+						*ngIf="
+								foo.bar.baz !== null &&
+								~~~
+											foo.bar.baz.length > 0
+											^^^;
+						">
+						</test>`,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+          data: { prop: "foo" },
+        },
+        {
+          char: "^",
+          messageId: MESSAGE_IDS.properties.explicit,
+          data: { prop: "foo" },
+        },
+      ],
+      annotatedOutput: `\
+					<test
+						*ngIf="
+								this.foo.bar.baz !== null &&
+								   
+											this.foo.bar.baz.length > 0
+											;
+						">
+						</test>`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with databinding implicit property where it should be an explicit property",
+      annotatedSource: `\
+					<test
+						*ngIf="
+								foo2.bar2.baz2
+								~~~~;
+						">
+						</test>`,
+      options: [
+        {
+          properties: "explicit",
+          variables: "explicit",
+          templateReferences: "explicit",
+        },
+      ],
+      messages: [
+        {
+          char: "~",
+          messageId: MESSAGE_IDS.properties.explicit,
+          data: { prop: "foo2" },
+        },
+      ],
+      annotatedOutput: `\
+					<test
+						*ngIf="
+								this.foo2.bar2.baz2
+								;
+						">
+						</test>`,
     }),
   ],
 });

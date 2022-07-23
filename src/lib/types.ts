@@ -1,4 +1,9 @@
-import type { AST } from "@angular-eslint/bundled-angular-compiler";
+import type {
+  AST,
+  TmplAstNode,
+  BindingType,
+} from "@angular-eslint/bundled-angular-compiler";
+import type { AST_NODE_TYPES } from "@typescript-eslint/utils";
 
 /**
  * The groups of nodes processed by this rule.
@@ -36,6 +41,7 @@ export type MessageIdKeys = {
 /**
  * AST with parent node type.
  */
-export type AstWithParent<T extends AST> = T & {
+export type AstWithParent<T extends AST | TmplAstNode> = T & {
   parent: AstWithParent<T>;
+  type: AST_NODE_TYPES | BindingType;
 };
