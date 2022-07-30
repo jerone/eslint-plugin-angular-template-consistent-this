@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist",
+    "outFile": "./dist/index.js",
     "resolveJsonModule": true
   },
   "include": ["src"]
