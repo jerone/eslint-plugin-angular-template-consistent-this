@@ -6,6 +6,8 @@ There is no functional reason to start properties with `this`. It is solely aest
 
 Explicit means that properties, variables and template references start with `this.`, like: `<test *ngIf="this.foo">{{this.bar}}</test>`.
 
+Read more about this rule [in the documentation](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/eslint-plugin-angular-template-consistent-this.md).
+
 ## Requirements
 
 You'll need to have an Angular project with the following packages installed:
