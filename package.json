@@ -4,7 +4,6 @@
   "description": "ESLint Angular Template consistent this for properties, variables & template references",
   "homepage": "https://github.com/jerone/eslint-plugin-angular-template-consistent-this",
   "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
-  "contributors": [],
   "keywords": [
     "eslint",
     "eslintrule",
@@ -44,7 +43,6 @@
     "eslint": "8.20.0"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
