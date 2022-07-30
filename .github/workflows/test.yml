@@ -12,7 +12,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [
+            # Angular supported Node.js versions. https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
+            14.15.5,
+            16.10.0,
+            # Latest and never versions.
+            14,
+            16,
+            18,
+          ]
 
     steps:
       - uses: actions/checkout@v3
