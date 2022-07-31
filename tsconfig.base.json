@@ -6,7 +6,7 @@
     "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
-    "module": "AMD",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -14,8 +14,8 @@
     "pretty": false,
     "sourceMap": false,
     "strict": true,
-    "target": "esnext",
+    "target": "ESNext",
     "baseUrl": ".",
-    "lib": ["esnext"]
+    "lib": ["ESNext"]
   }
 }
