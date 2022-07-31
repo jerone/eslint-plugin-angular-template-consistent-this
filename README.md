@@ -36,9 +36,9 @@ Add `eslint-plugin-angular-template-consistent-this` to the plugins section of y
     {
       "files": ["*.html"],
       "extends": [
-        "plugin:@angular-eslint/template/recommended",
-+       "plugin:angular-template-consistent-this/eslint-plugin-angular-template-consistent-this"
+        "plugin:@angular-eslint/template/recommended"
       ],
++     "plugins": ["angular-template-consistent-this"],
       "rules": {
         // ...
       }
@@ -58,9 +58,9 @@ Then configure the rules you want to use under the rules section.
     {
       "files": ["*.html"],
       "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "plugin:angular-template-consistent-this/eslint-plugin-angular-template-consistent-this"
+        "plugin:@angular-eslint/template/recommended"
       ],
+      "plugins": ["angular-template-consistent-this"],
       "rules": {
         // ...
 
