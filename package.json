@@ -48,7 +48,7 @@
     "build": "rimraf ./dist && tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run build"
   },
