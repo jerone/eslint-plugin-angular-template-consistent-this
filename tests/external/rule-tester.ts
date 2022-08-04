@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/array-type */
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/rules-tester.ts
+
 import { TSESLint } from "@typescript-eslint/utils";
 import * as path from "path";
 

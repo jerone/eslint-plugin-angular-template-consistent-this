@@ -6,7 +6,10 @@ import type {
   PropertyRead,
 } from "@angular-eslint/bundled-angular-compiler";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
-import { createESLintRule, ensureTemplateParser } from "../get-parser-service";
+import {
+  createESLintRule,
+  ensureTemplateParser,
+} from "../external/get-parser-service";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";

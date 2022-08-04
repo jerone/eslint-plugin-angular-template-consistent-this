@@ -2,8 +2,8 @@ import { MESSAGE_IDS } from "../../src/lib/message-ids";
 import rule, {
   RULE_NAME,
 } from "../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
-import { RuleTester } from "../helpers/rule-tester";
-import { convertAnnotatedSourceToFailureCase } from "../helpers/test-helpers";
+import { RuleTester } from "../external/rule-tester";
+import { convertAnnotatedSourceToFailureCase } from "../external/test-helpers";
 
 const ruleTester = new RuleTester({
   parser: "@angular-eslint/template-parser",
