@@ -11,6 +11,7 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/strict",
     "plugin:eslint-plugin/recommended",
+    "plugin:security/recommended",
     "prettier"
   ],
   "plugins": ["@typescript-eslint", "eslint-plugin"],
