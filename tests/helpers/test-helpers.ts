@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable @typescript-eslint/array-type */
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/convert-annotated-source-to-failure-case.ts
 
 import type { TSESLint } from "@typescript-eslint/utils";

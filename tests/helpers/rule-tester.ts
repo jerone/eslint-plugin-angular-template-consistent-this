@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/array-type */
+// Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/rules-tester.ts
 import { TSESLint } from "@typescript-eslint/utils";
 import * as path from "path";
 
@@ -42,7 +46,7 @@ export class RuleTester extends TSESLint.RuleTester {
     //   try {
     //     // instead of creating a hard dependency, just use a soft require
     //     // a bit weird, but if they're using this tooling, it'll be installed
-    //     /// eslint-disable-next-line @typescript-eslint/no-var-requires
+    //     // eslint-disable-next-line @typescript-eslint/no-var-requires
     //     require(options.parser).clearCaches();
     //   } catch {
     //     // ignored

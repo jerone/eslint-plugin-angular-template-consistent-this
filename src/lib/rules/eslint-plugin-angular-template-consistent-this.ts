@@ -108,7 +108,7 @@ function createRuleListener(
     },
 
     ["Element,Element$1"](node: TmplAstElement): void {
-      if (node.references && node.references.length > 0) {
+      if (node.references.length > 0) {
         templates.push(...node.references);
       }
     },
@@ -178,7 +178,11 @@ function createRuleListener(
       // 3) Check if property is part of an safe structural directives.
       // This happens for templates that haven't been caught by check 2.
       // TODO: Template reference variables can also be referenced from TS. See https://angular.io/api/common/NgIf#using-an-external-then-template
-      if (SAFE_STRUCTURAL_DIRECTIVES.includes(node.parent.parent.name)) {
+      const structuralDirective = node.parent?.parent?.name;
+      if (
+        structuralDirective &&
+        SAFE_STRUCTURAL_DIRECTIVES.includes(structuralDirective)
+      ) {
         if (options.templateReferences === "explicit" && isImplicitReceiver) {
           return reportError(
             context,

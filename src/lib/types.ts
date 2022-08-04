@@ -42,6 +42,6 @@ export type MessageIdKeys = {
  * AST with parent node type.
  */
 export type AstWithParent<T extends AST | TmplAstNode> = T & {
-  parent: AstWithParent<T>;
+  parent?: AstWithParent<T>;
   type: AST_NODE_TYPES | BindingType;
 };
