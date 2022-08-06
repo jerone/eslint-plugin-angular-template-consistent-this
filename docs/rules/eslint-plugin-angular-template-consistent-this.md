@@ -64,7 +64,7 @@ Use in your ESLint config file:
 
 ```js
 {
-	"angular-template-consistent-this/eslint-plugin-angular-template-consistent-this": "warn"
+  "angular-template-consistent-this/eslint-plugin-angular-template-consistent-this": "warn"
 }
 ```
 
@@ -72,14 +72,14 @@ Or with all available options:
 
 ```js
 {
-	"angular-template-consistent-this/eslint-plugin-angular-template-consistent-this": [
-		"warn",
-		{
-			"properties": "explicit",
-			"variables": "implicit",
-			"templateReferences": "implicit"
-		}
-	]
+  "angular-template-consistent-this/eslint-plugin-angular-template-consistent-this": [
+    "warn",
+    {
+      "properties": "explicit",
+      "variables": "implicit",
+      "templateReferences": "implicit"
+    }
+  ]
 }
 ```
 
