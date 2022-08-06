@@ -22,7 +22,7 @@ jobs:
         node-version: [
             # Angular supported Node.js versions.
             # https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
-            14.15.5,
+            14.15.0,
             16.10.0,
             # Run on Angular supported versions and latest Node.js version,
             # and assume that the intermediate versions are good.
