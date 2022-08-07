@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable @typescript-eslint/array-type */
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/utils/create-eslint-rule.ts
 
 import type {

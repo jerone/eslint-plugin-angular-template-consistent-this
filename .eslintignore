@@ -1,2 +1,5 @@
 node_modules/
 dist/
+
+# Ignore copied files, to keep the code as close to the original as possible.
+**/external/
