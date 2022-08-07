@@ -57,7 +57,7 @@
     "prepublishOnly": "npm run build"
   },
   "engines": {
-    "node": ">=14.15.5"
+    "node": ">=14.15.0"
   },
   "directories": {
     "test": "./tests"
