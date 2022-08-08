@@ -35,7 +35,7 @@ export type MessageIds =
  * Type for list of message identifiers.
  */
 export type MessageIdKeys = {
-  [_ in RuleOptionGroup]: { [_ in RuleOptionValue]: MessageIds };
+  [_ in RuleOptionGroup]: { [__ in RuleOptionValue]: MessageIds };
 };
 
 /**
