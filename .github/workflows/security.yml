@@ -67,3 +67,4 @@ jobs:
           args:
             -Dsonar.projectKey=jerone_eslint-plugin-angular-template-consistent-this
             -Dsonar.organization=jerone
+            -Dsonar.tests=tests/rules/*.ts
