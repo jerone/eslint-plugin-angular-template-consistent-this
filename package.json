@@ -32,7 +32,6 @@
     "@typescript-eslint/scope-manager": "5.33.0",
     "@typescript-eslint/utils": "5.33.0",
     "cross-env": "7.0.3",
-    "editorconfig-checker": "^4.0.2",
     "eslint": "8.21.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-formatter-checklist": "^0.0.1",
@@ -54,7 +53,7 @@
     "build": "rimraf ./dist && tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
-    "lint": "lockfile-lint && editorconfig-checker -disable-indentation && eslint -f checklist .",
+    "lint": "lockfile-lint && eslint -f checklist .",
     "lint:fix": "eslint -f checklist --fix .",
     "prepublishOnly": "npm run build"
   },
