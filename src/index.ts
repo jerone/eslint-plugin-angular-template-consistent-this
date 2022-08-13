@@ -1,7 +1,9 @@
-import rule from "./lib/rules/eslint-plugin-angular-template-consistent-this";
+import consistentThisRule, {
+  RULE_NAME as consistentThisRuleName,
+} from "./lib/rules/eslint-plugin-angular-template-consistent-this";
 
-module.exports = {
+export default {
   rules: {
-    "eslint-plugin-angular-template-consistent-this": rule,
+    [consistentThisRuleName]: consistentThisRule,
   },
 };
