@@ -122,6 +122,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
     node,
     isASTWithSource
   );
+  /* istanbul ignore if -- Safe-guard, out-of-scope of our own tests. */
   if (astWithSource === null || !astWithSource.source) {
     return 0;
   }
