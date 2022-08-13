@@ -71,5 +71,6 @@ jobs:
           args: >
             -Dsonar.projectKey=jerone_eslint-plugin-angular-template-consistent-this
             -Dsonar.organization=jerone
+            -Dsonar.sources=.
             -Dsonar.tests=./tests/rules/
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
