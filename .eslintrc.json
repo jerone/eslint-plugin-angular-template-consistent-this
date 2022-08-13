@@ -15,7 +15,10 @@
         "plugin:@typescript-eslint/strict",
         "plugin:eslint-plugin/recommended",
         "plugin:security/recommended",
-        "prettier"
+        // Enables eslint-plugin-prettier and eslint-config-prettier.
+        // This will display Prettier errors as ESLint errors.
+        // This should always be the last configuration in the extends array.
+        "plugin:prettier/recommended"
       ],
       "plugins": ["@typescript-eslint", "eslint-plugin"],
       "parserOptions": {
@@ -51,9 +54,16 @@
     {
       "files": ["*.md"],
       "parser": "eslint-plugin-markdownlint/parser",
-      "extends": ["plugin:markdownlint/recommended"],
+      "extends": [
+        "plugin:markdownlint/recommended",
+        // Enables eslint-plugin-prettier and eslint-config-prettier.
+        // This will display Prettier errors as ESLint errors.
+        // This should always be the last configuration in the extends array.
+        "plugin:prettier/recommended"
+      ],
       "rules": {
-        "markdownlint/md013": "off" // Disable line length.
+        "markdownlint/md013": "off", // Disable line length.
+        "prettier/prettier": ["error", { "parser": "markdown" }]
       }
     }
   ]
