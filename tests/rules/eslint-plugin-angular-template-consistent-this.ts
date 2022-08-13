@@ -41,7 +41,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Databinding.
+     * Data-binding.
      */
     {
       // Explicit.
@@ -64,7 +64,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Databinding, with extra whitespaces and tabs.
+     * Data-binding, with extra whitespaces and tabs.
      */
     {
       // Explicit.
@@ -87,7 +87,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Databinding, with line-breaks.
+     * Data-binding, with line-breaks.
      */
     {
       // Explicit.
@@ -226,7 +226,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Databinding & interpolation with sub-properties.
+     * Data-binding & interpolation with sub-properties.
      */
     {
       // Explicit.
@@ -505,7 +505,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
 
     /**
-     * Template *reference* variable (`#template`) accessed via databinding.
+     * Template *reference* variable (`#template`) accessed via data-binding.
      */
     {
       code: `
@@ -590,11 +590,11 @@ ruleTester.run(RULE_NAME, rule, {
 
   invalid: [
     /**
-     * Databinding.
+     * Data-binding.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding implicit property where it should be an explicit property",
+        "it fails with data-binding implicit property where it should be an explicit property",
       annotatedSource: `\
         <test [bar]="foo">{{this.bar}}</test>
                      ~~~`,
@@ -606,7 +606,7 @@ ruleTester.run(RULE_NAME, rule, {
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding explicit property where it should be an implicit property",
+        "it fails with data-binding explicit property where it should be an implicit property",
       annotatedSource: `\
         <test [bar]="this.foo">{{bar}}</test>
                      ~~~~~~~~`,
@@ -619,11 +619,11 @@ ruleTester.run(RULE_NAME, rule, {
     }),
 
     /**
-     * Databinding, with extra whitespaces and tabs.
+     * Data-binding, with extra whitespaces and tabs.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding implicit property where it should be an explicit property",
+        "it fails with data-binding implicit property where it should be an explicit property",
       annotatedSource: `\
         <test [bar]="  		foo  		">{{this.bar}}</test>
                        		~~~`,
@@ -635,7 +635,7 @@ ruleTester.run(RULE_NAME, rule, {
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding explicit property where it should be an implicit property",
+        "it fails with data-binding explicit property where it should be an implicit property",
       annotatedSource: `\
         <test [bar]="  		this.foo  		">{{bar}}</test>
                        		~~~~~~~~`,
@@ -648,11 +648,11 @@ ruleTester.run(RULE_NAME, rule, {
     }),
 
     /**
-     * Databinding, with line-breaks.
+     * Data-binding, with line-breaks.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding implicit property where it should be an explicit property",
+        "it fails with data-binding implicit property where it should be an explicit property",
       annotatedSource: `\
         <test [bar]="
           
@@ -670,7 +670,7 @@ ruleTester.run(RULE_NAME, rule, {
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding explicit property where it should be an implicit property",
+        "it fails with data-binding explicit property where it should be an implicit property",
       annotatedSource: `\
         <test [bar]="
           
@@ -835,7 +835,7 @@ test {{
     }),
 
     /**
-     * Databinding & interpolation with sub-properties.
+     * Data-binding & interpolation with sub-properties.
      */
     convertAnnotatedSourceToFailureCase({
       description:
@@ -884,11 +884,11 @@ test {{
     }),
 
     /**
-     * Template *reference* variable (`#template`) accessed via databinding.
+     * Template *reference* variable (`#template`) accessed via data-binding.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with implicit template reference variable via databinding where it should be explicit.",
+        "it fails with implicit template reference variable via data-binding where it should be explicit.",
       annotatedSource: `\
         <test-elm-with-id #test_identifier>
           <test-elm-child [prop]="test_identifier.property"></test-elm-child>
@@ -905,7 +905,7 @@ test {{
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with explicit template reference variable via databinding where it should be implicit.",
+        "it fails with explicit template reference variable via data-binding where it should be implicit.",
       annotatedSource: `\
         <test-elm-with-id #test_identifier>
           <test-elm-child [prop]="this.test_identifier.property"></test-elm-child>
@@ -1145,11 +1145,11 @@ test {{
     }),
 
     /**
-     * Databinding with weird indentation.
+     * Data-binding with weird indentation.
      */
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding implicit property where it should be an explicit property",
+        "it fails with data-binding implicit property where it should be an explicit property",
       annotatedSource: `\
 					<test
 						*ngIf="
@@ -1190,7 +1190,7 @@ test {{
     }),
     convertAnnotatedSourceToFailureCase({
       description:
-        "it fails with databinding implicit property where it should be an explicit property",
+        "it fails with data-binding implicit property where it should be an explicit property",
       annotatedSource: `\
 					<test
 						*ngIf="

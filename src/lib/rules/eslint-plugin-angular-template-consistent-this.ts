@@ -208,7 +208,7 @@ function createRuleListener(
         return;
       }
 
-      // 4) Interpolation of databinding property.
+      // 4) Interpolation of data-binding property.
       if (options.properties === "explicit" && isImplicitReceiver) {
         return reportError(
           context,
