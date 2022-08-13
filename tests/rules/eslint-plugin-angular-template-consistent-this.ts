@@ -882,6 +882,82 @@ test {{
     }),
 
     /**
+     * Template *reference* variable (`#template`) accessed via databinding.
+     */
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with implicit template reference variable via databinding where it should be explicit.",
+      annotatedSource: `\
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="test_identifier.property"></test-elm-child>
+                                  ~~~~~~~~~~~~~~~
+        </test-elm-with-id>`,
+      options: [{ templateReferences: "explicit" }],
+      messageId: MESSAGE_IDS.templateReferences.explicit,
+      data: { prop: "test_identifier" },
+      annotatedOutput: `\
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="this.test_identifier.property"></test-elm-child>
+                                  
+        </test-elm-with-id>`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with explicit template reference variable via databinding where it should be implicit.",
+      annotatedSource: `\
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="this.test_identifier.property"></test-elm-child>
+                                  ~~~~~~~~~~~~~~~~~~~~
+        </test-elm-with-id>`,
+      options: [{ templateReferences: "implicit" }],
+      messageId: MESSAGE_IDS.templateReferences.implicit,
+      data: { prop: "test_identifier" },
+      annotatedOutput: `\
+        <test-elm-with-id #test_identifier>
+          <test-elm-child [prop]="test_identifier.property"></test-elm-child>
+                                  
+        </test-elm-with-id>`,
+    }),
+
+    /**
+     * Template *reference* variable (`#template`) accessed via interpolation.
+     */
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with implicit template reference variable via interpolation where it should be explicit.",
+      annotatedSource: `\
+        <test-elm-with-id #test_identifier>
+          {{ test_identifier.property }}
+             ~~~~~~~~~~~~~~~
+        </test-elm-with-id>`,
+      options: [{ templateReferences: "explicit" }],
+      messageId: MESSAGE_IDS.templateReferences.explicit,
+      data: { prop: "test_identifier" },
+      annotatedOutput: `\
+        <test-elm-with-id #test_identifier>
+          {{ this.test_identifier.property }}
+             
+        </test-elm-with-id>`,
+    }),
+    convertAnnotatedSourceToFailureCase({
+      description:
+        "it fails with explicit template reference variable via interpolation where it should be implicit.",
+      annotatedSource: `\
+        <test-elm-with-id #test_identifier>
+          {{ this.test_identifier.property }}
+             ~~~~~~~~~~~~~~~~~~~~
+        </test-elm-with-id>`,
+      options: [{ templateReferences: "implicit" }],
+      messageId: MESSAGE_IDS.templateReferences.implicit,
+      data: { prop: "test_identifier" },
+      annotatedOutput: `\
+        <test-elm-with-id #test_identifier>
+          {{ test_identifier.property }}
+             
+        </test-elm-with-id>`,
+    }),
+
+    /**
      * NgIf directive `*ngIf` with "as variable" and then & else
      * references to templates that are defined *after* property reading.
      */
