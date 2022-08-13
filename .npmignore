@@ -1,5 +1,7 @@
 *
 !dist/**
+!.nyc_output/**
+!coverage/**
 !package.json
 !LICENSE
 !README
