@@ -27,7 +27,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/eslint": "8.4.5",
     "@types/mocha": "9.1.1",
-    "@types/node": "18.7.2",
+    "@types/node": "18.7.3",
     "@typescript-eslint/eslint-plugin": "5.33.0",
     "@typescript-eslint/parser": "5.33.0",
     "@typescript-eslint/scope-manager": "5.33.0",
