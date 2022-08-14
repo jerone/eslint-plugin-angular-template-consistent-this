@@ -33,7 +33,7 @@
     "@typescript-eslint/scope-manager": "5.33.0",
     "@typescript-eslint/utils": "5.33.0",
     "cross-env": "7.0.3",
-    "eslint": "8.21.0",
+    "eslint": "8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-formatter-checklist": "^0.0.1",
     "eslint-plugin-eslint-plugin": "5.0.3",
