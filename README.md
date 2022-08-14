@@ -47,7 +47,7 @@ Add `eslint-plugin-angular-template-consistent-this` to the plugins section of y
 }
 ```
 
-Then configure the rules you want to use under the rules section.
+Then configure the rules you want to use under the rules section. The recommended configuration is:
 
 ```diff
 {
@@ -62,8 +62,6 @@ Then configure the rules you want to use under the rules section.
       ],
       "plugins": ["angular-template-consistent-this"],
       "rules": {
-        // ...
-
 +       // Prepend properties with `this`.
 +       "angular-template-consistent-this/eslint-plugin-angular-template-consistent-this": [
 +         "error",
