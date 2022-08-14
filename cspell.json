@@ -1,9 +1,0 @@
-// cSpell Settings
-{
-  // Version of the setting file. Always 0.2
-  "version": "0.2",
-  // Current active spelling language.
-  "language": "en",
-  // List of words to be always considered correct.
-  "words": ["CODELYZER", "Tmpl", "TSES", "whitespaces"]
-}

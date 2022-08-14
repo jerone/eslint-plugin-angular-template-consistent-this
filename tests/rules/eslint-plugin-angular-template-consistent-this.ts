@@ -469,19 +469,19 @@ ruleTester.run(RULE_NAME, rule, {
       /* See https://angular.io/api/common/NgTemplateOutlet#example
         ```
         export class NgTemplateOutletExample {
-          public myContext = { $implicit: 'contactpersoon', firstName: 'Jeroen' };
+          public myContext = { $implicit: 'customer', firstName: 'Jeroen' };
         }
         ```
       */
       code: `
         <ng-container *ngTemplateOutlet="greetings; context: this.myContext"></ng-container>
-        <ng-template #greetings let-person="firstName"><span>Beste {{person}}</span></ng-template>`,
+        <ng-template #greetings let-person="firstName"><span>Dear {{person}}</span></ng-template>`,
     },
     {
       // Explicit.
       code: `
         <ng-container *ngTemplateOutlet="this.greetings; context: this.myContext"></ng-container>
-        <ng-template #greetings let-person="firstName"><span>Beste {{this.person}}</span></ng-template>`,
+        <ng-template #greetings let-person="firstName"><span>Dear {{this.person}}</span></ng-template>`,
       options: [
         {
           properties: "explicit",
@@ -494,7 +494,7 @@ ruleTester.run(RULE_NAME, rule, {
       // Implicit.
       code: `
         <ng-container *ngTemplateOutlet="greetings; context: myContext"></ng-container>
-        <ng-template #greetings let-person="firstName"><span>Beste {{person}}</span></ng-template>`,
+        <ng-template #greetings let-person="firstName"><span>Dear {{person}}</span></ng-template>`,
       options: [
         {
           properties: "implicit",
