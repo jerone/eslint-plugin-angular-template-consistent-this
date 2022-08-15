@@ -2,10 +2,10 @@ import { MESSAGE_IDS } from "../../src/lib/message-ids";
 import { RULE_NAME } from "../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
 import { RuleTester } from "../external/rule-tester";
 import { convertAnnotatedSourceToFailureCase } from "../external/test-helpers";
-import rulesIndex from "../../src/index";
+import { rules } from "../../src/index";
 
 // eslint-disable-next-line security/detect-object-injection
-const rule = rulesIndex.rules[RULE_NAME];
+const rule = rules[RULE_NAME];
 
 const ruleTester = new RuleTester({
   parser: "@angular-eslint/template-parser",
