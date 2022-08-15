@@ -4,6 +4,6 @@
   "all": true,
   "include": ["src/**/!(*.test.*).[tj]s?(x)"],
   "exclude": ["**/external/"],
-  "reporter": ["lcov", "text", "text-summary"],
+  "reporter": ["cobertura", "lcov", "text", "text-summary"],
   "report-dir": "coverage"
 }

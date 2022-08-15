@@ -61,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-fund
       - name: Test and coverage
-        run: npm run test:coverage
+        run: npm run test
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.6
         env:
@@ -76,3 +76,17 @@ jobs:
             -Dsonar.tests=./tests/rules/
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
             -Dsonar.verbose=true
+
+  codecov:
+    name: Run Codecov scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install dependencies
+        run: npm ci --no-fund
+      - name: Test and coverage
+        run: npm run test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

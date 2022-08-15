@@ -57,8 +57,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
-    "test:coverage": "nyc npm run test",
+    "test": "nyc cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
     "lint": "lockfile-lint && eslint -f checklist .",
     "lint:fix": "eslint -f checklist --fix .",
     "prepublishOnly": "npm run build"

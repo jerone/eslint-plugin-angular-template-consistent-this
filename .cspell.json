@@ -7,6 +7,8 @@
   // List of words to be always considered correct.
   "words": [
     "autobuild",
+    "cobertura",
+    "codecov",
     "CODELYZER",
     "codeql",
     "Dsonar",
