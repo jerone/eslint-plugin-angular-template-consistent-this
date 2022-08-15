@@ -1,5 +1,12 @@
 # ESLint Angular Template consistent this (`eslint-plugin-angular-template-consistent-this`)
 
+[![npm](https://img.shields.io/npm/v/eslint-plugin-angular-template-consistent-this)](https://www.npmjs.com/package/eslint-plugin-angular-template-consistent-this)
+[![CI](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml/badge.svg)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)
+[![Security](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml/badge.svg)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml)
+[![GitHub issues](https://img.shields.io/github/issues/jerone/eslint-plugin-angular-template-consistent-this)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this)
+[![MIT license](https://img.shields.io/github/license/jerone/eslint-plugin-angular-template-consistent-this)](https://opensource.org/licenses/MIT)
+[![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+
 Explicit/implicit prefix properties, variables and template references with `this.` in Angular HTML templates.
 
 There is no functional reason to start properties with `this`. It is solely aesthetic. But by giving developers the choice to apply it or not, the code will look inconsistent.
