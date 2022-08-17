@@ -29,11 +29,9 @@ jobs:
           # Run on Angular supported versions and latest Node.js version,
           # and assume that the intermediate versions are good.
           - 18
-        include:
-          - angular-version: 13
-            eslint-version: 7
-          - angular-version: 14
-            eslint-version: 8
+        angular-and-eslint-version:
+          - [13, 7]
+          - [14, 8]
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -44,10 +42,10 @@ jobs:
       - run: npm ci --no-fund
       - run: |
           npm install --save-dev
-          @angular-eslint/template-parser@${{ matrix.angular-version }}
-          @angular-eslint/utils@${{ matrix.angular-version }}
-          @angular/compiler@${{ matrix.angular-version }}
-      - run: npm install --save-dev eslint@${{ matrix.eslint-version }}
+          @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }}
+          @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }}
+          @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
+      - run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
       - run: npm run test
       - name: Test Report
         uses: dorny/test-reporter@v1
