@@ -44,9 +44,9 @@ jobs:
       - name: Install ESLint Angular
         run: |
           npm install --save-dev \
-          @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }} \
-          @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }} \
-          @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
+            @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }} \
+            @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }} \
+            @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
       - name: Install ESLint
         run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
       - name: Run tests
