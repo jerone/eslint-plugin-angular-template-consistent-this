@@ -3,8 +3,12 @@ name: Security
 on:
   push:
     branches: ["master"]
+    paths-ignore:
+      - "*.md"
   pull_request:
     branches: ["master"]
+    paths-ignore:
+      - "*.md"
   schedule:
     - cron: "0 12 * * 0"
   workflow_dispatch:
