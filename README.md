@@ -1,4 +1,4 @@
-# ESLint Angular Template consistent this (`eslint-plugin-angular-template-consistent-this`)
+# ESLint Angular Template consistent this <br>`eslint-plugin-angular-template-consistent-this`
 
 [![npm](https://img.shields.io/npm/v/eslint-plugin-angular-template-consistent-this)](https://www.npmjs.com/package/eslint-plugin-angular-template-consistent-this)
 [![CI](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml/badge.svg)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)

@@ -64,6 +64,7 @@
       ],
       "rules": {
         "markdownlint/md013": "off", // Disable line length.
+        "markdownlint/md033": ["error", { "allowed_elements": ["br"] }], // Allow br-element.
         "prettier/prettier": ["error", { "parser": "markdown" }]
       }
     }
