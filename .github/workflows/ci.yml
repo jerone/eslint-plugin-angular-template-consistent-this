@@ -41,9 +41,9 @@ jobs:
           cache: "npm"
       - run: npm ci --no-fund
       - run: |
-          npm install --save-dev
-          @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }}
-          @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }}
+          npm install --save-dev \
+          @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }} \
+          @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }} \
           @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
       - run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
       - run: npm run test
