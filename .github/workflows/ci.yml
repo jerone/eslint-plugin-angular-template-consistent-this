@@ -39,14 +39,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci --no-fund
-      - run: |
+      - name: Install packages
+        run: npm ci --no-fund
+      - name: Install ESLint Angular
+        run: |
           npm install --save-dev \
           @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }} \
           @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }} \
           @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
-      - run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
-      - run: npm run test
+      - name: Install ESLint
+        run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
+      - name: Run tests
+        run: npm run test
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure() # Run this step even if previous step failed.
