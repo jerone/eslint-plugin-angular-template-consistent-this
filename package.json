@@ -30,6 +30,7 @@
     "lint": "lockfile-lint && eslint -f checklist .",
     "lint:fix": "prettier --write \"**/*\" & eslint -f checklist --fix .",
     "prepublishOnly": "npm run build",
+    "security:eslint": "eslint -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif .",
     "test": "nyc cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -39,6 +40,7 @@
     "@angular/compiler": "14.1.3",
     "@cspell/eslint-plugin": "^6.6.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/eslint": "8.4.5",
     "@types/mocha": "9.1.1",
     "@types/node": "18.7.6",
