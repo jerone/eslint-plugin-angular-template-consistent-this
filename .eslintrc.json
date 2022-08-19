@@ -1,6 +1,12 @@
 {
   "root": true,
-  "extends": ["plugin:@cspell/recommended"],
+  "extends": [
+    "plugin:@cspell/recommended",
+    // Enables eslint-plugin-prettier and eslint-config-prettier.
+    // This will display Prettier errors as ESLint errors.
+    // This should always be the last configuration in the extends array.
+    "plugin:prettier/recommended"
+  ],
   "overrides": [
     /*
      * Typescript files.
