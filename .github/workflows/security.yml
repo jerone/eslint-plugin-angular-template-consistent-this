@@ -22,8 +22,8 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v3
-      - name: Install ESLint SARIF formatter
-        run: npm install @microsoft/eslint-formatter-sarif@2.1.7
+      - name: Install ESLint and SARIF formatter
+        run: npm install eslint @microsoft/eslint-formatter-sarif@2.1.7
       - name: Run ESLint
         run: npx eslint .
           --format @microsoft/eslint-formatter-sarif
