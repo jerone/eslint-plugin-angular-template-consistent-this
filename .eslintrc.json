@@ -71,6 +71,31 @@
     },
 
     /*
+     * `package.json` file.
+     * This needs it's own configuration, because it doesn't work together with `plugin:json`.
+     * See https://github.com/kellyselden/eslint-plugin-json-files/issues/40
+     * Must be after `*.json`.
+     */
+    {
+      "files": ["package.json"],
+      "plugins": ["json-files"],
+      "extends": [
+        // Enables eslint-plugin-prettier and eslint-config-prettier.
+        // This will display Prettier errors as ESLint errors.
+        // This should always be the last configuration in the extends array.
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "json-files/ensure-repository-directory": "error",
+        "json-files/no-branch-in-dependencies": "error",
+        "json-files/require-engines": "error",
+        "json-files/require-license": "error",
+        "json-files/require-unique-dependency-names": "error",
+        "json-files/sort-package-json": "error"
+      }
+    },
+
+    /*
      * Markdown files.
      */
     {
