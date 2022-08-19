@@ -2,6 +2,9 @@
   "root": true,
   "extends": ["plugin:@cspell/recommended"],
   "overrides": [
+    /*
+     * Typescript files.
+     */
     {
       "files": ["*.ts"],
       "parser": "@typescript-eslint/parser",
@@ -52,6 +55,10 @@
         "eslint-plugin/test-case-shorthand-strings": ["error", "consistent"]
       }
     },
+
+    /*
+     * Markdown files.
+     */
     {
       "files": ["*.md"],
       "parser": "eslint-plugin-markdownlint/parser",
