@@ -33,6 +33,6 @@
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true // Fix all fixable ESLint rules.
+    "source.fixAll": true // Fix all fixable errors on save.
   }
 }
