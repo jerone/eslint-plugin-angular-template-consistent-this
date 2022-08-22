@@ -43,7 +43,7 @@
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/eslint": "8.4.6",
     "@types/mocha": "9.1.1",
-    "@types/node": "18.7.8",
+    "@types/node": "18.7.9",
     "@typescript-eslint/eslint-plugin": "5.33.1",
     "@typescript-eslint/parser": "5.33.1",
     "@typescript-eslint/scope-manager": "5.33.1",
