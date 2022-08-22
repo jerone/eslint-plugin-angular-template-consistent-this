@@ -31,7 +31,7 @@
     "lint:fix": "prettier --write \"**/*\" & eslint -f checklist --fix .",
     "prepublishOnly": "npm run build",
     "security:eslint": "eslint -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif .",
-    "test": "nyc cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
+    "test": "npm run clean && nyc cross-env TS_NODE_PROJECT=./tsconfig.test.json mocha",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
