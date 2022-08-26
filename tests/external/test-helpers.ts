@@ -1,4 +1,5 @@
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/convert-annotated-source-to-failure-case.ts
+// With https://github.com/angular-eslint/angular-eslint/pull/1118
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
@@ -71,8 +72,6 @@ type SingleErrorOptions<TMessageIds extends string> = BaseErrorOptions &
  *    data: { prefixes: '"ng"' },
  *  }),
  * ```
- *
- * NOTE: The description is purely for documentation purposes. It is not used in the test.
  */
 export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
   errorOptions: SingleErrorOptions<TMessageIds>
@@ -124,6 +123,7 @@ export function convertAnnotatedSourceToFailureCase<TMessageIds extends string>(
   );
 
   return {
+    name: errorOptions.description,
     code: parsedSource,
     filename: errorOptions.filename,
     options: errorOptions.options ?? [],
