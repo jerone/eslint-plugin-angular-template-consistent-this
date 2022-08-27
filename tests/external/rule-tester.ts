@@ -1,4 +1,7 @@
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/rules-tester.ts
+// The method `afterAll` throws because of missing dependency to Jest.
+// Remove this file once Jest is implemented as testing framework, 
+// and reference class `RuleTester` from "@angular-eslint/utils".
 
 import { TSESLint } from "@typescript-eslint/utils";
 import * as path from "path";

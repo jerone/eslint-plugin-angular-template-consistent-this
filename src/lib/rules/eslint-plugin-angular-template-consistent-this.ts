@@ -10,6 +10,10 @@ import {
   createESLintRule,
   ensureTemplateParser,
 } from "../external/get-parser-service";
+// import {
+//   createESLintRule,
+//   ensureTemplateParser,
+// } from "@angular-eslint/eslint-plugin-template/dist/eslint-plugin-template/src/utils/create-eslint-rule";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";

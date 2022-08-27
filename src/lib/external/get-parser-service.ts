@@ -1,4 +1,6 @@
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/utils/create-eslint-rule.ts
+// Methods `createESLintRule` and `ensureTemplateParser` are not exported within "@angular-eslint/eslint-plugin-template".
+// See https://github.com/angular-eslint/angular-eslint/issues/888
 
 import type {
   ParseSourceSpan,

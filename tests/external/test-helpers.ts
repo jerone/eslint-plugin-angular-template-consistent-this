@@ -1,5 +1,5 @@
 // Copied from https://github.com/angular-eslint/angular-eslint/blob/main/packages/utils/src/convert-annotated-source-to-failure-case.ts
-// With https://github.com/angular-eslint/angular-eslint/pull/1118
+// Remove once https://github.com/angular-eslint/angular-eslint/pull/1118 is merged.
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
