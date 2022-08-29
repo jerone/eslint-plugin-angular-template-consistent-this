@@ -1,6 +1,6 @@
+import { RuleTester } from "@angular-eslint/utils";
 import { MESSAGE_IDS } from "../../src/lib/message-ids";
 import { RULE_NAME } from "../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
-import { RuleTester } from "../external/rule-tester";
 import { convertAnnotatedSourceToFailureCase } from "../external/test-helpers";
 // import { convertAnnotatedSourceToFailureCase } from "@angular-eslint/utils";
 import { rules } from "../../src/index";
