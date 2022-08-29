@@ -1,13 +1,21 @@
 # ESLint Angular Template consistent this <br>`eslint-plugin-angular-template-consistent-this`
 
 [![npm](https://img.shields.io/npm/v/eslint-plugin-angular-template-consistent-this)](https://www.npmjs.com/package/eslint-plugin-angular-template-consistent-this)
-[![CI](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml/badge.svg)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)
-[![Security](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml/badge.svg)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml)
+[![GitHub Action: CI](https://img.shields.io/github/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/CI?label=CI&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)
+[![GitHub Action: Security](https://img.shields.io/github/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/Security?label=Security&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml)
 [![Codecov](https://codecov.io/gh/jerone/eslint-plugin-angular-template-consistent-this/branch/master/graph/badge.svg?token=BTJRO49LZT)](https://codecov.io/gh/jerone/eslint-plugin-angular-template-consistent-this)
-[![Snyk vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/jerone/eslint-plugin-angular-template-consistent-this)](https://snyk.io/test/github/jerone/eslint-plugin-angular-template-consistent-this)
-[![GitHub issues](https://img.shields.io/github/issues/jerone/eslint-plugin-angular-template-consistent-this)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Coverage](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=coverage)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Security Rating](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Bugs](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=bugs)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![SonarCloud: Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
+[![Snyk vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/jerone/eslint-plugin-angular-template-consistent-this?logo=snyk)](https://snyk.io/test/github/jerone/eslint-plugin-angular-template-consistent-this)
+[![GitHub issues](https://img.shields.io/github/issues/jerone/eslint-plugin-angular-template-consistent-this?logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this)
 [![MIT license](https://img.shields.io/github/license/jerone/eslint-plugin-angular-template-consistent-this)](https://opensource.org/licenses/MIT)
-[![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+[![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat&logo=prettier)](https://github.com/prettier/prettier)
 
 Explicit/implicit prefix properties, variables and template references with `this.` in Angular HTML templates.
 
