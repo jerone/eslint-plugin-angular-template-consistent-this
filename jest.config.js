@@ -9,6 +9,22 @@ module.exports = {
     "!**/node_modules/**",
     "!**/external/**",
   ],
+  reporters: [
+    "default",
+    [
+      // Needed for CI workflow Github Action Job Summary.
+      // See https://github.com/dorny/test-reporter#supported-formats
+      "jest-junit",
+      {
+        outputDirectory: "coverage",
+        ancestorSeparator: " › ",
+        uniqueOutputName: "false",
+        suiteNameTemplate: "{filepath}",
+        classNameTemplate: "{classname}",
+        titleTemplate: "{title}",
+      },
+    ],
+  ],
   globals: {
     "ts-jest": {
       tsconfig: "tsconfig.test.json",
