@@ -18,7 +18,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    name: "test (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-version }})"
+    name: "test (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-eslint-version }})"
     strategy:
       fail-fast: false # Run all jobs, even when previous fails.
       matrix:
@@ -32,7 +32,7 @@ jobs:
           # Latest Node.js version.
           - latest
         eslint-version: [7, 8]
-        angular-eslint: [13, 14]
+        angular-eslint-version: [13, 14]
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -44,19 +44,19 @@ jobs:
         run: npm ci --no-fund
       - name: Install ESLint ${{ matrix.eslint-version }}
         run: npm install --save-dev eslint@${{ matrix.eslint-version }}
-      - name: Install Angular ESLint ${{ matrix.angular-eslint }}
+      - name: Install Angular ESLint ${{ matrix.angular-eslint-version }}
         run: |
           npm install --save-dev \
-            @angular-eslint/template-parser@${{ matrix.angular-eslint }} \
-            @angular-eslint/utils@${{ matrix.angular-eslint }} \
-            @angular/compiler@${{ matrix.angular-eslint }}
+            @angular-eslint/template-parser@${{ matrix.angular-eslint-version }} \
+            @angular-eslint/utils@${{ matrix.angular-eslint-version }} \
+            @angular/compiler@${{ matrix.angular-eslint-version }}
       - name: Run tests
         run: npm run test
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure() # Run this step even if previous step failed.
         with:
-          name: "test report (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-version }})"
+          name: "test report (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-eslint-version }})"
           path: coverage/junit.xml
           reporter: jest-junit
 
