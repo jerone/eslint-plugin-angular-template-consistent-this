@@ -18,8 +18,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    name: "test (Node.js v${{ matrix.node-version }}, ESLint v${{ matrix.eslint-version }}, Angular ESLint v${{ matrix.angular-version }})"
+    name: "test (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-version }})"
     strategy:
+      fail-fast: false # Run all jobs, even when previous fails.
       matrix:
         # Run on latest and Angular supported Node.js versions,
         # and assume that the intermediate versions are good.
@@ -41,9 +42,9 @@ jobs:
           cache: "npm"
       - name: Install packages
         run: npm ci --no-fund
-      - name: Install ESLint
+      - name: Install ESLint ${{ matrix.eslint-version }}
         run: npm install --save-dev eslint@${{ matrix.eslint-version }}
-      - name: Install Angular ESLint
+      - name: Install Angular ESLint ${{ matrix.angular-eslint }}
         run: |
           npm install --save-dev \
             @angular-eslint/template-parser@${{ matrix.angular-eslint }} \
@@ -55,7 +56,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure() # Run this step even if previous step failed.
         with:
-          name: "test report (Node.js v${{ matrix.node-version }}, ESLint v${{ matrix.eslint-version }}, Angular ESLint v${{ matrix.angular-version }})"
+          name: "test report (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-version }})"
           path: coverage/junit.xml
           reporter: jest-junit
 
