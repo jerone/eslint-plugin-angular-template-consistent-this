@@ -21,7 +21,7 @@ jobs:
     name: "test (node v${{ matrix.node-version }})"
     strategy:
       matrix:
-        # Run on Angular supported versions and latest Node.js version,
+        # Run on latest and Angular supported Node.js versions,
         # and assume that the intermediate versions are good.
         node-version:
           # Angular supported Node.js versions.
@@ -30,9 +30,8 @@ jobs:
           - 16.10.0
           # Latest Node.js version.
           - latest
-        angular-and-eslint-version:
-          - [13, 7]
-          - [14, 8]
+        angular-eslint: [13, 14],
+        eslint-version: [7, 8]
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -45,11 +44,11 @@ jobs:
       - name: Install Angular ESLint
         run: |
           npm install --save-dev \
-            @angular-eslint/template-parser@${{ matrix.angular-and-eslint-version[0] }} \
-            @angular-eslint/utils@${{ matrix.angular-and-eslint-version[0] }} \
-            @angular/compiler@${{ matrix.angular-and-eslint-version[0] }}
+            @angular-eslint/template-parser@${{ matrix.angular-eslint }} \
+            @angular-eslint/utils@${{ matrix.angular-eslint }} \
+            @angular/compiler@${{ matrix.angular-eslint }}
       - name: Install ESLint
-        run: npm install --save-dev eslint@${{ matrix.angular-and-eslint-version[1] }}
+        run: npm install --save-dev eslint@${{ matrix.eslint-version }}
       - name: Run tests
         run: npm run test
       - name: Test Report
