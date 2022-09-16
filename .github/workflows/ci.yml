@@ -29,7 +29,7 @@ jobs:
           - 14.15.0
           - 16.10.0
           # Latest Node.js version.
-          - 18
+          - latest
         angular-and-eslint-version:
           - [13, 7]
           - [14, 8]
