@@ -1,4 +1,10 @@
+/*
+ * This file is used by VSCode and Jest.
+ */
 {
   "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "sourceMap": true
+  },
   "include": ["src", "tests"]
 }
