@@ -1,4 +1,4 @@
-/** @type {import('ts-jest').InitialOptionsTsJest} */
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   preset: "ts-jest",
   collectCoverage: true,
@@ -25,9 +25,5 @@ module.exports = {
       },
     ],
   ],
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.test.json",
-    },
-  },
+  testEnvironment: "node",
 };

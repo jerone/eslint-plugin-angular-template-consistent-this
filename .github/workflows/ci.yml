@@ -18,18 +18,24 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    name: "test (node v${{ matrix.node-version }})"
+    name: "test (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-eslint-version[0] }})"
     strategy:
+      fail-fast: false # Run all jobs, even when previous fails.
       matrix:
-        node-version: [
-            # Angular supported Node.js versions.
-            # https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
-            14.15.0,
-            16.10.0,
-            # Run on Angular supported versions and latest Node.js version,
-            # and assume that the intermediate versions are good.
-            18,
-          ]
+        # Run on latest and Angular supported Node.js versions,
+        # and assume that the intermediate versions are good.
+        node-version:
+          # Angular supported Node.js versions.
+          # https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
+          - 14.15.0
+          - 16.10.0
+          # Latest Node.js version.
+          - latest
+        eslint-version: [7, 8]
+        # Angular ESLint version, and corresponding Typescript ESLint version.
+        angular-eslint-version:
+          - [13, "5.27.1"]
+          - [14, "latest"]
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -37,13 +43,25 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci --no-fund
-      - run: npm run test
+      - name: Install packages
+        run: npm ci --no-fund
+      - name: Install Angular ESLint ${{ matrix.angular-eslint-version[0] }}
+        run: |
+          npm install --save-dev \
+            @angular-eslint/template-parser@${{ matrix.angular-eslint-version[0] }} \
+            @angular-eslint/utils@${{ matrix.angular-eslint-version[0] }} \
+            @angular/compiler@${{ matrix.angular-eslint-version[0] }} \
+            @typescript-eslint/eslint-plugin@${{ matrix.angular-eslint-version[1] }} \
+            @typescript-eslint/parser@${{ matrix.angular-eslint-version[1] }}
+      - name: Install ESLint ${{ matrix.eslint-version }}
+        run: npm install --save-dev eslint@${{ matrix.eslint-version }}
+      - name: Run tests
+        run: npm run test
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure() # Run this step even if previous step failed.
         with:
-          name: "test report (node v${{ matrix.node-version }})"
+          name: "test report (Node.js ${{ matrix.node-version }}, ESLint ${{ matrix.eslint-version }}, Angular ESLint ${{ matrix.angular-eslint-version[0] }})"
           path: coverage/junit.xml
           reporter: jest-junit
 
