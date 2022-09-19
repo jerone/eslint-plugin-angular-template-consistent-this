@@ -29,7 +29,6 @@
     "clean": "rimraf dist coverage",
     "lint": "lockfile-lint && eslint -f checklist .",
     "lint:fix": "prettier --write \"**/*\" & eslint -f checklist --fix .",
-    "ncu": "ncu --target patch typescript && ncu -x typescript",
     "prepublishOnly": "npm run build",
     "security:eslint": "eslint -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif .",
     "test": "npm run clean && jest",
