@@ -50,8 +50,8 @@ jobs:
           npm install --save-dev \
             @angular-eslint/template-parser@${{ matrix.angular-eslint-version[0] }} \
             @angular-eslint/utils@${{ matrix.angular-eslint-version[0] }} \
-            @angular/compiler@${{ matrix.angular-eslint-version[0] }}
-            @typescript-eslint/eslint-plugin@${{ matrix.angular-eslint-version[1] }}
+            @angular/compiler@${{ matrix.angular-eslint-version[0] }} \
+            @typescript-eslint/eslint-plugin@${{ matrix.angular-eslint-version[1] }} \
             @typescript-eslint/parser@${{ matrix.angular-eslint-version[1] }}
       - name: Install ESLint ${{ matrix.eslint-version }}
         run: npm install --save-dev eslint@${{ matrix.eslint-version }}
