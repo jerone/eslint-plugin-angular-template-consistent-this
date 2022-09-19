@@ -1,8 +1,7 @@
+import { convertAnnotatedSourceToFailureCase } from "@angular-eslint/utils";
 import { RuleTester } from "../rule-tester";
 import { MESSAGE_IDS } from "../../src/lib/message-ids";
 import { RULE_NAME } from "../../src/lib/rules/eslint-plugin-angular-template-consistent-this";
-import { convertAnnotatedSourceToFailureCase } from "../external/test-helpers";
-// import { convertAnnotatedSourceToFailureCase } from "@angular-eslint/utils";
 import { rules } from "../../src/index";
 
 // eslint-disable-next-line security/detect-object-injection
