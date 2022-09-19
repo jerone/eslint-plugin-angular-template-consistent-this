@@ -66,7 +66,7 @@ jobs:
           reporter: jest-junit
 
   copyright:
-    if: ${{ github.ref == "refs/heads/master" }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
