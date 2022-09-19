@@ -39,7 +39,7 @@
     "@angular-eslint/template-parser": "14.1.1",
     "@angular-eslint/utils": "14.1.1",
     "@angular/compiler": "14.2.2",
-    "@cspell/eslint-plugin": "^6.9.1",
+    "@cspell/eslint-plugin": "^6.10.0",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/eslint": "8.4.6",
     "@types/jest": "^29.0.3",
