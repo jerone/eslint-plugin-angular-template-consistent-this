@@ -14,7 +14,7 @@ export class RuleTester extends ESLintRuleTester {
   ): void {
     // Remove property `name` when not supported.
     if (!supportsName) {
-      [...tests.valid, ...tests.invalid].forEach((testCase) => {
+      [...tests.valid, ...tests.invalid].forEach((testCase): void => {
         if (typeof testCase === "object") {
           // Cast to `any` is needed to allow deletion of *readonly* `name` property.
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
