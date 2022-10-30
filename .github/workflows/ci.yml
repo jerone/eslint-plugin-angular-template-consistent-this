@@ -75,7 +75,15 @@ jobs:
       - uses: FantasticFiasco/action-update-license-year@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: 8BitJonny/gh-get-current-pr@2.1.3
+        id: current-pr
+        with:
+          filterOutClosed: false # Only return if PR is still open.
+      - env:
+          TEST: ${{ toJson(steps) }}
+        run: echo "$TEST"
       - name: Merge PR
+        if: success() && steps.current-pr.outputs.number
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr merge --rebase --delete-branch
