@@ -5,15 +5,9 @@ import type {
   TmplAstVariable,
   PropertyRead,
 } from "@angular-eslint/bundled-angular-compiler";
+import { ensureTemplateParser } from "@angular-eslint/utils";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
-import {
-  createESLintRule,
-  ensureTemplateParser,
-} from "../external/get-parser-service";
-// import {
-//   createESLintRule,
-//   ensureTemplateParser,
-// } from "@angular-eslint/eslint-plugin-template/dist/eslint-plugin-template/src/utils/create-eslint-rule";
+import { ESLintUtils } from "@typescript-eslint/utils";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";
@@ -42,7 +36,12 @@ const defaultOptions: Readonly<RuleOptions> = [
   },
 ];
 
-export default createESLintRule<RuleOptions, MessageIds>({
+const createRule = ESLintUtils.RuleCreator(
+  (_ruleName) =>
+    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/${_ruleName}.md`
+);
+
+export default createRule({
   name: RULE_NAME,
   defaultOptions,
   meta: {
