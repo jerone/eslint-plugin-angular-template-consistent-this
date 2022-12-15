@@ -4,6 +4,7 @@ import semver from "semver";
 
 // Property `name` in RuleTester is introduced in version 8.1.0.
 // See https://github.com/eslint/eslint/pull/15179
+// Remove this file once ESLint v8.1.0 is the minimum supported version for this package.
 const supportsName: boolean = semver.gte(TSESLint.ESLint.version, "8.1.0");
 
 export class RuleTester extends ESLintRuleTester {
