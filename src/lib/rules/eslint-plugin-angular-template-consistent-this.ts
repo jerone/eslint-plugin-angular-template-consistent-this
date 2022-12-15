@@ -46,10 +46,9 @@ export default createRule({
   defaultOptions,
   meta: {
     type: "suggestion",
-    // eslint-disable-next-line eslint-plugin/require-meta-docs-url -- Url is set in `createESLintRule`.
     docs: {
       description:
-        "ESLint Angular Template consistent this for properties, variables & template references.",
+        "enforce consistent this for properties, variables & template references",
       recommended: false,
     },
     fixable: "code",
