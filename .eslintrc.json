@@ -46,14 +46,14 @@
         ],
 
         "eslint-plugin/consistent-output": ["error", "always"],
-        "eslint-plugin/meta-property-ordering": ["error"],
-        "eslint-plugin/prefer-placeholders": ["error"],
-        "eslint-plugin/prefer-replace-text": ["error"],
+        "eslint-plugin/meta-property-ordering": "error",
+        "eslint-plugin/prefer-placeholders": "error",
+        "eslint-plugin/prefer-replace-text": "error",
         "eslint-plugin/report-message-format": [
           "error",
           "^[A-Z].*(`{{prop}}`).*\\.$"
         ], // Must start with capital, end with period and contains placeholder for "prop".
-        "eslint-plugin/require-meta-docs-description": ["error"],
+        "eslint-plugin/require-meta-docs-description": "error",
         "eslint-plugin/test-case-shorthand-strings": ["error", "consistent"]
       }
     },
