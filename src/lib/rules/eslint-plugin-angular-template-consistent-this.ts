@@ -7,7 +7,6 @@ import type {
 } from "@angular-eslint/bundled-angular-compiler";
 import { ensureTemplateParser } from "@angular-eslint/utils";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
-import { ESLintUtils } from "@typescript-eslint/utils";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";
@@ -36,12 +35,7 @@ const defaultOptions: Readonly<RuleOptions> = [
   },
 ];
 
-const createRule = ESLintUtils.RuleCreator(
-  (_ruleName) =>
-    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/${_ruleName}.md`
-);
-
-export default createRule({
+export default Utils.createRule({
   name: RULE_NAME,
   defaultOptions,
   meta: {
