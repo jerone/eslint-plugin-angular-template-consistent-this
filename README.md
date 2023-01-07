@@ -93,3 +93,8 @@ Then configure the rules you want to use under the rules section. The recommende
   ]
 }
 ```
+
+<br/>
+<br/>
+
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
