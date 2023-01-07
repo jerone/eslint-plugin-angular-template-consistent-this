@@ -1,8 +1,8 @@
 # ESLint Angular Template consistent this <br>`eslint-plugin-angular-template-consistent-this`
 
 [![npm](https://img.shields.io/npm/v/eslint-plugin-angular-template-consistent-this)](https://www.npmjs.com/package/eslint-plugin-angular-template-consistent-this)
-[![GitHub Action: CI](https://img.shields.io/github/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/CI?label=CI&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)
-[![GitHub Action: Security](https://img.shields.io/github/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/Security?label=Security&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml)
+[![GitHub Action: CI](https://img.shields.io/github/actions/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/.github/workflows/ci.yml?branch=master&label=CI&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/ci.yml)
+[![GitHub Action: Security](https://img.shields.io/github/actions/workflow/status/jerone/eslint-plugin-angular-template-consistent-this/.github/workflows/security.yml?branch=master&label=Security&logo=github)](https://github.com/jerone/eslint-plugin-angular-template-consistent-this/actions/workflows/security.yml)
 [![Codecov](https://codecov.io/gh/jerone/eslint-plugin-angular-template-consistent-this/branch/master/graph/badge.svg?token=BTJRO49LZT)](https://codecov.io/gh/jerone/eslint-plugin-angular-template-consistent-this)
 [![SonarCloud: Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
 [![SonarCloud: Coverage](https://sonarcloud.io/api/project_badges/measure?project=jerone_eslint-plugin-angular-template-consistent-this&metric=coverage)](https://sonarcloud.io/summary/new_code?id=jerone_eslint-plugin-angular-template-consistent-this)
