@@ -77,10 +77,9 @@ jobs:
       - uses: FantasticFiasco/action-update-license-year@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+        id: license
       - name: Merge PR
-        # Disabled until issue with wrong merging PR is fixed.
-        # See https://github.com/FantasticFiasco/action-update-license-year/discussions/276#discussioncomment-3985583
-        if: ${{ false }}
+        if: steps.license.outputs.pullRequestNumber != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge --rebase --delete-branch
+        run: gh pr merge --rebase --delete-branch ${{ steps.license.outputs.pullRequestNumber }}
