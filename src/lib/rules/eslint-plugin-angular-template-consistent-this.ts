@@ -239,7 +239,7 @@ function reportError(
   const sourceCode = context.getSourceCode();
 
   // There is a bug in AST parser that returns the wrong locations for data-binding. See #1.
-  const offset = Utils.getLocOffsetFix(node);
+  const offset: number = Utils.getLocOffsetFix(node);
 
   const loc: Readonly<TSESTree.SourceLocation> = {
     start: sourceCode.getLocFromIndex(node.sourceSpan.start - offset),
