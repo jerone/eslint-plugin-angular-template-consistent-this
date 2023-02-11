@@ -13,6 +13,15 @@ import {
 import type { TSESTree } from "@typescript-eslint/utils";
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import type { AstWithParent } from "./types";
+import { ESLintUtils } from "@typescript-eslint/utils";
+
+/**
+ * Create rule with documentation url.
+ */
+const createRule = ESLintUtils.RuleCreator(
+  (ruleName: string): string =>
+    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/${ruleName}.md`
+);
 
 /**
  * Detect if a given `node` is explicit receiver.
@@ -150,6 +159,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
 }
 
 export default {
+  createRule,
   isExplicitReceiver,
   isImplicitReceiver,
   getLocOffsetFix,

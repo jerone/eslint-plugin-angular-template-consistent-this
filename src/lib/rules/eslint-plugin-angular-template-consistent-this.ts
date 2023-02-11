@@ -5,15 +5,8 @@ import type {
   TmplAstVariable,
   PropertyRead,
 } from "@angular-eslint/bundled-angular-compiler";
+import { ensureTemplateParser } from "@angular-eslint/utils";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
-import {
-  createESLintRule,
-  ensureTemplateParser,
-} from "../external/get-parser-service";
-// import {
-//   createESLintRule,
-//   ensureTemplateParser,
-// } from "@angular-eslint/eslint-plugin-template/dist/eslint-plugin-template/src/utils/create-eslint-rule";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";
@@ -42,15 +35,14 @@ const defaultOptions: Readonly<RuleOptions> = [
   },
 ];
 
-export default createESLintRule<RuleOptions, MessageIds>({
+export default Utils.createRule({
   name: RULE_NAME,
   defaultOptions,
   meta: {
     type: "suggestion",
-    // eslint-disable-next-line eslint-plugin/require-meta-docs-url -- Url is set in `createESLintRule`.
     docs: {
       description:
-        "ESLint Angular Template consistent this for properties, variables & template references.",
+        "enforce consistent this for properties, variables & template references",
       recommended: false,
     },
     fixable: "code",
@@ -247,7 +239,7 @@ function reportError(
   const sourceCode = context.getSourceCode();
 
   // There is a bug in AST parser that returns the wrong locations for data-binding. See #1.
-  const offset = Utils.getLocOffsetFix(node);
+  const offset: number = Utils.getLocOffsetFix(node);
 
   const loc: Readonly<TSESTree.SourceLocation> = {
     start: sourceCode.getLocFromIndex(node.sourceSpan.start - offset),

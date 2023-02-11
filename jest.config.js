@@ -4,11 +4,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   coverageReporters: ["text", "text-summary", "lcov", "cobertura"],
-  collectCoverageFrom: [
-    "src/**/*.ts",
-    "!**/node_modules/**",
-    "!**/external/**",
-  ],
+  collectCoverageFrom: ["src/**/*.ts", "!**/node_modules/**"],
   reporters: [
     "default",
     [

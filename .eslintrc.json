@@ -46,18 +46,19 @@
         ],
 
         "eslint-plugin/consistent-output": ["error", "always"],
-        "eslint-plugin/meta-property-ordering": ["error"],
-        "eslint-plugin/no-deprecated-context-methods": ["error"],
-        "eslint-plugin/prefer-object-rule": ["error"],
-        "eslint-plugin/prefer-placeholders": ["error"],
-        "eslint-plugin/prefer-replace-text": ["error"],
+        "eslint-plugin/meta-property-ordering": "error",
+        "eslint-plugin/prefer-placeholders": "error",
+        "eslint-plugin/prefer-replace-text": "error",
         "eslint-plugin/report-message-format": [
           "error",
           "^[A-Z].*(`{{prop}}`).*\\.$"
         ], // Must start with capital, end with period and contains placeholder for "prop".
-        "eslint-plugin/require-meta-docs-url": ["error"],
-        "eslint-plugin/require-meta-schema": ["error"],
-        "eslint-plugin/require-meta-type": ["error"],
+        "eslint-plugin/require-meta-docs-description": "error",
+        "eslint-plugin/require-meta-docs-url": "off", // This is handled by `ESLintUtils.RuleCreator`.
+        "eslint-plugin/test-case-property-ordering": [
+          "error",
+          ["name", "code", "options"]
+        ],
         "eslint-plugin/test-case-shorthand-strings": ["error", "consistent"]
       }
     },
