@@ -2,10 +2,12 @@
   "root": true,
   "extends": [
     "plugin:@cspell/recommended",
+
+    // Display Prettier errors as ESLint errors.
     // Enables eslint-plugin-prettier and eslint-config-prettier.
-    // This will display Prettier errors as ESLint errors.
-    // This should always be the last configuration in the extends array.
     "plugin:prettier/recommended"
+
+    //! Prettier should always be the last configuration in the extends array.
   ],
   "overrides": [
     /*
@@ -25,10 +27,12 @@
         "plugin:@typescript-eslint/strict",
         "plugin:eslint-plugin/recommended",
         "plugin:security/recommended",
+
+        // Display Prettier errors as ESLint errors.
         // Enables eslint-plugin-prettier and eslint-config-prettier.
-        // This will display Prettier errors as ESLint errors.
-        // This should always be the last configuration in the extends array.
         "plugin:prettier/recommended"
+
+        //! Prettier should always be the last configuration in the extends array.
       ],
       "plugins": ["@typescript-eslint", "eslint-plugin"],
       "parserOptions": {
@@ -70,10 +74,12 @@
       "files": ["*.json"],
       "extends": [
         "plugin:json/recommended-with-comments",
+
+        // Display Prettier errors as ESLint errors.
         // Enables eslint-plugin-prettier and eslint-config-prettier.
-        // This will display Prettier errors as ESLint errors.
-        // This should always be the last configuration in the extends array.
         "plugin:prettier/recommended"
+
+        //! Prettier should always be the last configuration in the extends array.
       ]
     },
 
@@ -87,10 +93,11 @@
       "files": ["package.json"],
       "plugins": ["json-files"],
       "extends": [
+        // Display Prettier errors as ESLint errors.
         // Enables eslint-plugin-prettier and eslint-config-prettier.
-        // This will display Prettier errors as ESLint errors.
-        // This should always be the last configuration in the extends array.
         "plugin:prettier/recommended"
+
+        //! Prettier should always be the last configuration in the extends array.
       ],
       "rules": {
         "json-files/ensure-repository-directory": "error",
@@ -110,10 +117,12 @@
       "parser": "eslint-plugin-markdownlint/parser",
       "extends": [
         "plugin:markdownlint/recommended",
+
+        // Display Prettier errors as ESLint errors.
         // Enables eslint-plugin-prettier and eslint-config-prettier.
-        // This will display Prettier errors as ESLint errors.
-        // This should always be the last configuration in the extends array.
         "plugin:prettier/recommended"
+
+        //! Prettier should always be the last configuration in the extends array.
       ],
       "rules": {
         "markdownlint/md013": "off", // Disable line length.
