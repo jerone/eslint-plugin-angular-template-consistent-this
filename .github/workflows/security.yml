@@ -15,7 +15,7 @@ on:
 
 jobs:
   eslint:
-    name: Run ESLint scanning
+    name: Run ESLint security rules
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,7 +34,7 @@ jobs:
           wait-for-processing: true
 
   codeql:
-    name: Run CodeQL scanning
+    name: Run CodeQL
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -48,18 +48,18 @@ jobs:
           languages: typescript
       - name: Auto-build by CodeQL
         uses: github/codeql-action/autobuild@v2
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysis and upload to GitHub
         uses: github/codeql-action/analyze@v2
 
   sonarcloud:
-    name: Run SonarCloud scanning
+    name: Run SonarCloud
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+      pull-requests: read # Allows SonarCloud to decorate PRs with analysis results.
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis.
       - name: Install dependencies
         run: npm ci --no-fund
       - name: Test and coverage
@@ -80,12 +80,12 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
 
   codecov:
-    name: Run Codecov scanning
+    name: Run Codecov
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis.
       - name: Install dependencies
         run: npm ci --no-fund
       - name: Test and coverage
