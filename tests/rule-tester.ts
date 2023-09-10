@@ -11,7 +11,7 @@ export class RuleTester extends ESLintRuleTester {
   run<TMessageIds extends string, TOptions extends ReadonlyArray<unknown>>(
     name: string,
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
-    tests: TSESLint.RunTests<TMessageIds, TOptions>
+    tests: TSESLint.RunTests<TMessageIds, TOptions>,
   ): void {
     // Remove property `name` when not supported.
     if (!supportsName) {
