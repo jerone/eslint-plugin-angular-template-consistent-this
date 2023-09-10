@@ -27,7 +27,7 @@ jobs:
         node-version:
           # Angular supported Node.js versions.
           # https://angular.io/guide/versions
-          - 14.20.0
+          - 14.15.0
           - 16.14.0
           - 18.10.0
           # Latest Node.js version.
@@ -40,7 +40,7 @@ jobs:
           - [15, "latest"]
           - [16, "latest"]
         exclude:
-          - node-version: 14.20.0
+          - node-version: 14.15.0
             angular-eslint-version: [16, "latest"]
     steps:
       - uses: actions/checkout@v4
