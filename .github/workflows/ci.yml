@@ -30,7 +30,6 @@ jobs:
           - 14.15.0
           - 16.14.0
           - 18.10.0
-          # Latest Node.js version.
           - latest
         eslint-version: [7, 8]
         # Angular ESLint version, and corresponding typescript-eslint version.
@@ -40,6 +39,7 @@ jobs:
           - [15, "latest"]
           - [16, "latest"]
         exclude:
+          # Angular v16 dropped support for NodeJS v14.
           - node-version: 14.15.0
             angular-eslint-version: [16, "latest"]
     steps:
@@ -49,6 +49,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+      # Cannot use `npm ci`, because this package uses ESLint plugins,
+      # which conflict with the different installations below.
+      # Also the package-lock file is to new for npm on older NodeJS versions.
       - name: Install packages
         run: npm install rimraf typescript jest jest-junit ts-jest
       - name: Install Angular ESLint ${{ matrix.angular-eslint-version[0] }}
