@@ -26,9 +26,8 @@ jobs:
         # and assume that the intermediate versions are good.
         node-version:
           # Angular supported Node.js versions.
-          # https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
-          - 14.15.0
-          - 16.10.0
+          # https://angular.io/guide/versions
+          - 16.14.0
           - 18.10.0
           # Latest Node.js version.
           - latest
@@ -38,6 +37,7 @@ jobs:
           - [13, "5.27.1"]
           - [14, "latest"]
           - [15, "latest"]
+          - [16, "latest"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
