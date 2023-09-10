@@ -11,9 +11,8 @@ import {
   TmplAstBoundAttribute,
 } from "@angular-eslint/bundled-angular-compiler";
 import type { TSESTree } from "@typescript-eslint/utils";
-import { AST_NODE_TYPES } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, ESLintUtils } from "@typescript-eslint/utils";
 import type { AstWithParent } from "./types";
-import { ESLintUtils } from "@typescript-eslint/utils";
 
 /**
  * Create rule with documentation url.
