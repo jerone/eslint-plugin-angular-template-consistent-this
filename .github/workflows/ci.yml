@@ -49,8 +49,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - name: Install packages
-        run: npm ci --no-fund
       - name: Install Angular ESLint ${{ matrix.angular-eslint-version[0] }}
         run: |
           npm install --save-dev \
@@ -61,6 +59,8 @@ jobs:
             @typescript-eslint/parser@${{ matrix.angular-eslint-version[1] }}
       - name: Install ESLint ${{ matrix.eslint-version }}
         run: npm install --save-dev eslint@${{ matrix.eslint-version }}
+      - name: Install packages
+        run: npm ci --no-fund
       - name: Run tests
         run: npm run test
       - name: Test Report
