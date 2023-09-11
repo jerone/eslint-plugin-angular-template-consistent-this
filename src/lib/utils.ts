@@ -149,7 +149,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
   }
 
   // Get all the whitespaces (including line-breaks) before the expression.
-  const result = /^[\r\n\s\t]+/gm.exec(astWithSource.source);
+  const result = /^\s+/gm.exec(astWithSource.source);
   if (result !== null && result.length > 0) {
     return result[0].length;
   }
