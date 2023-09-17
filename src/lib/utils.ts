@@ -19,7 +19,7 @@ import type { AstWithParent } from "./types";
  */
 const createRule = ESLintUtils.RuleCreator(
   (ruleName: string): string =>
-    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/${ruleName}.md`
+    `https://github.com/jerone/eslint-plugin-angular-template-consistent-this/blob/master/docs/rules/${ruleName}.md`,
 );
 
 /**
@@ -73,10 +73,10 @@ function isProgram(node: unknown): node is TSESTree.Program {
  */
 function getNearestNodeFrom<
   T extends AST | TmplAstNode,
-  Tout extends AST | TmplAstNode
+  Tout extends AST | TmplAstNode,
 >(
   { parent }: AstWithParent<T | Tout>,
-  predicate: (parent: AST | TmplAstNode) => boolean
+  predicate: (parent: AST | TmplAstNode) => boolean,
 ): AstWithParent<Tout> | null {
   while (parent && !isProgram(parent)) {
     if (predicate(parent)) {
@@ -95,7 +95,7 @@ function getNearestNodeFrom<
  * @returns `true` if all parents are PropertyRead.
  */
 function allParentsArePropertiesUntilSource<T extends AST>(
-  node: AstWithParent<T>
+  node: AstWithParent<T>,
 ): boolean {
   let isAllPropertyRead = false;
   while (node.parent && !isASTWithSource(node.parent)) {
@@ -119,7 +119,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
   // This issue only applies for data-binding. Ignore interpolation.
   const astBoundAttribute = getNearestNodeFrom<T, TmplAstBoundAttribute>(
     node,
-    (n) => n instanceof TmplAstBoundAttribute
+    (n) => n instanceof TmplAstBoundAttribute,
   );
   if (astBoundAttribute === null) {
     return 0;
@@ -128,7 +128,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
   // We need access to the source code to calculate the offset.
   const astWithSource = getNearestNodeFrom<T, ASTWithSource>(
     node,
-    isASTWithSource
+    isASTWithSource,
   );
   /* istanbul ignore if -- Safe-guard, out-of-scope of our own tests. */
   if (astWithSource === null || !astWithSource.source) {
@@ -149,7 +149,7 @@ function getLocOffsetFix<T extends AST>(node: AstWithParent<T>): number {
   }
 
   // Get all the whitespaces (including line-breaks) before the expression.
-  const result = /^[\r\n\s\t]+/gm.exec(astWithSource.source);
+  const result = /^\s+/gm.exec(astWithSource.source);
   if (result !== null && result.length > 0) {
     return result[0].length;
   }

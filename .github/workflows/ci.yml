@@ -26,11 +26,10 @@ jobs:
         # and assume that the intermediate versions are good.
         node-version:
           # Angular supported Node.js versions.
-          # https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3
+          # https://angular.io/guide/versions
           - 14.15.0
-          - 16.10.0
+          - 16.14.0
           - 18.10.0
-          # Latest Node.js version.
           - latest
         eslint-version: [7, 8]
         # Angular ESLint version, and corresponding typescript-eslint version.
@@ -38,6 +37,11 @@ jobs:
           - [13, "5.27.1"]
           - [14, "latest"]
           - [15, "latest"]
+          - [16, "latest"]
+        exclude:
+          # Angular v16 dropped support for NodeJS v14.
+          - node-version: 14.15.0
+            angular-eslint-version: [16, "latest"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -45,18 +49,21 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+      # Cannot use `npm ci`, because this package uses ESLint plugins,
+      # which conflict with the different installations below.
+      # Also the package-lock file is to new for npm on older NodeJS versions.
       - name: Install packages
-        run: npm ci --no-fund
+        run: npm install rimraf typescript jest jest-junit ts-jest
       - name: Install Angular ESLint ${{ matrix.angular-eslint-version[0] }}
         run: |
-          npm install --save-dev \
+          npm install \
             @angular-eslint/template-parser@${{ matrix.angular-eslint-version[0] }} \
             @angular-eslint/utils@${{ matrix.angular-eslint-version[0] }} \
             @angular/compiler@${{ matrix.angular-eslint-version[0] }} \
             @typescript-eslint/eslint-plugin@${{ matrix.angular-eslint-version[1] }} \
             @typescript-eslint/parser@${{ matrix.angular-eslint-version[1] }}
       - name: Install ESLint ${{ matrix.eslint-version }}
-        run: npm install --save-dev eslint@${{ matrix.eslint-version }}
+        run: npm install eslint@${{ matrix.eslint-version }}
       - name: Run tests
         run: npm run test
       - name: Test Report

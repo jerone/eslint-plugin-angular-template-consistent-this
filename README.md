@@ -30,7 +30,7 @@ Read more about this rule [in the documentation](https://github.com/jerone/eslin
 You'll need to have an Angular project with the following packages installed:
 
 - [ESLint](https://eslint.org/) - version 7 and 8 are tested.
-- [Angular ESLint](https://github.com/angular-eslint/angular-eslint) - version 13, 14 & 15 are tested.
+- [Angular ESLint](https://github.com/angular-eslint/angular-eslint) - version 13, 14 & 15 & 16 are tested.
 
 ## Installation
 

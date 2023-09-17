@@ -86,7 +86,7 @@ export default Utils.createRule({
 
 function createRuleListener(
   context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
-  [options]: Readonly<RuleOptions>
+  [options]: Readonly<RuleOptions>,
 ): TSESLint.RuleListener {
   ensureTemplateParser(context);
 
@@ -135,14 +135,14 @@ function createRuleListener(
             context,
             true,
             MESSAGE_IDS.variables.explicit,
-            node
+            node,
           );
         } else if (options.variables === "implicit" && isExplicitReceiver) {
           return reportError(
             context,
             false,
             MESSAGE_IDS.variables.implicit,
-            node
+            node,
           );
         }
 
@@ -157,7 +157,7 @@ function createRuleListener(
             context,
             true,
             MESSAGE_IDS.templateReferences.explicit,
-            node
+            node,
           );
         } else if (
           options.templateReferences === "implicit" &&
@@ -167,7 +167,7 @@ function createRuleListener(
             context,
             false,
             MESSAGE_IDS.templateReferences.implicit,
-            node
+            node,
           );
         }
 
@@ -187,7 +187,7 @@ function createRuleListener(
             context,
             true,
             MESSAGE_IDS.templateReferences.explicit,
-            node
+            node,
           );
         } else if (
           options.templateReferences === "implicit" &&
@@ -197,7 +197,7 @@ function createRuleListener(
             context,
             false,
             MESSAGE_IDS.templateReferences.implicit,
-            node
+            node,
           );
         }
 
@@ -210,14 +210,14 @@ function createRuleListener(
           context,
           true,
           MESSAGE_IDS.properties.explicit,
-          node
+          node,
         );
       } else if (options.properties === "implicit" && isExplicitReceiver) {
         return reportError(
           context,
           false,
           MESSAGE_IDS.properties.implicit,
-          node
+          node,
         );
       }
     },
@@ -234,7 +234,7 @@ function reportError(
   context: Readonly<TSESLint.RuleContext<MessageIds, RuleOptions>>,
   explicit: boolean,
   messageId: MessageIds,
-  node: AstWithParent<PropertyRead>
+  node: AstWithParent<PropertyRead>,
 ): void {
   const sourceCode = context.getSourceCode();
 
@@ -257,7 +257,7 @@ function reportError(
       } else {
         return fixer.replaceTextRange(
           [startIndex, startIndex + "this.".length],
-          ""
+          "",
         );
       }
     },
