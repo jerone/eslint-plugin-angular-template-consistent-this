@@ -35,8 +35,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@angular-eslint/template-parser": "16.1.2",
-    "@angular-eslint/utils": "16.1.2",
+    "@angular-eslint/template-parser": "16.2.0",
+    "@angular-eslint/utils": "16.2.0",
     "@angular/compiler": "16.2.5",
     "@cspell/eslint-plugin": "7.3.6",
     "@microsoft/eslint-formatter-sarif": "3.0.0",
