@@ -8,4 +8,4 @@ const rules = {
 
 export { rules };
 
-// TODO: SonarCloud test
+// TODO: SonarCloud test 2
