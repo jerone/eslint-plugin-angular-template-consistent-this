@@ -7,3 +7,5 @@ const rules = {
 };
 
 export { rules };
+
+// TODO: SonarCloud test
