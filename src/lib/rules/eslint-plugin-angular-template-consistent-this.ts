@@ -5,11 +5,11 @@ import type {
   TmplAstVariable,
   PropertyRead,
 } from "@angular-eslint/bundled-angular-compiler";
-import { ensureTemplateParser } from "@angular-eslint/utils";
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import { MESSAGE_IDS } from "../message-ids";
 import type { MessageIds, AstWithParent, RuleOptions } from "../types";
 import Utils from "../utils";
+import { ensureTemplateParser } from "../external/ensure-template-parser";
 
 export const RULE_NAME = "eslint-plugin-angular-template-consistent-this";
 
