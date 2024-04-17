@@ -29,7 +29,7 @@ export function ensureTemplateParser(
 ): void {
   try {
     import("@angular-eslint/utils")
-      .then(({ default: utils }) => {
+      .then((utils) => {
         try {
           utils.ensureTemplateParser(context);
         } catch {
