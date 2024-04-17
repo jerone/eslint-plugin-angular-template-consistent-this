@@ -21,9 +21,6 @@
   "author": "Jeroen van Warmerdam <jeronevw@hotmail.com>",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "directories": {
-    "test": "./tests"
-  },
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rimraf dist coverage",
