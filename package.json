@@ -29,7 +29,8 @@
     "clean": "rimraf dist coverage",
     "lint": "lockfile-lint && eslint -f checklist .",
     "lint:fix": "prettier --write \"**/*\" & eslint -f checklist --fix .",
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build && npx clean-package",
+    "postpack": "npx clean-package restore",
     "security:eslint": "eslint -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif .",
     "test": "npm run clean && jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -70,5 +71,12 @@
   },
   "engines": {
     "node": ">=14.15.0"
+  },
+  "clean-package": {
+    "remove": [
+      "clean-package",
+      "devDependencies",
+      "scripts"
+    ]
   }
 }
