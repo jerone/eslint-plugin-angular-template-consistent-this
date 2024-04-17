@@ -33,17 +33,24 @@ export function ensureTemplateParser(
         try {
           utils.ensureTemplateParser(context);
         } catch {
+          /* istanbul ignore next -- fallback for Angular ESLint v13 */
           ensureTemplateParserFallback(context);
         }
       })
-      .catch(() => {
-        ensureTemplateParserFallback(context);
-      });
+      .catch(
+        /* istanbul ignore next -- fallback for Angular ESLint v13 */
+        () => {
+          /* istanbul ignore next -- fallback for Angular ESLint v13 */
+          ensureTemplateParserFallback(context);
+        },
+      );
   } catch {
+    /* istanbul ignore next -- fallback for Angular ESLint v13 */
     ensureTemplateParserFallback(context);
   }
 }
 
+/* istanbul ignore next -- fallback for Angular ESLint v13 */
 function ensureTemplateParserFallback(
   context: Readonly<TSESLint.RuleContext<string, ReadonlyArray<unknown>>>,
 ): void {
