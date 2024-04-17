@@ -1,7 +1,5 @@
 {
-  "allowedHosts": [
-    "npm"
-  ],
+  "allowedHosts": ["npm"],
   "allowedPackageNameAliases": [
     "string-width-cjs:string-width",
     "strip-ansi-cjs:strip-ansi",
