@@ -20,6 +20,7 @@
     "jerone",
     "lcov",
     "postpack",
+    "rimraf",
     "SARIF",
     "Snyk",
     "sonarcloud",
