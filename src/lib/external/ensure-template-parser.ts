@@ -28,7 +28,6 @@ export function ensureTemplateParser(
   context: Readonly<TSESLint.RuleContext<string, ReadonlyArray<unknown>>>,
 ): void {
   try {
-    // v14.4.0 and higher.
     import("@angular-eslint/utils")
       .then(({ default: utils }) => {
         try {
